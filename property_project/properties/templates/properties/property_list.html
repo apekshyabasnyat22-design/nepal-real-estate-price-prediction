@@ -1,0 +1,119 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Properties - Nepal Real Estate</title>
+    <link rel="stylesheet" href="{% static 'properties/style.css' %}">
+</head>
+
+<body>
+
+    <nav>
+        <div class="logo">Nepal Real Estate</div>
+
+        <div class="nav-links">
+            <a href="/">Home</a>
+            <a href="/properties/">Properties</a>
+            <a href="#">About</a>
+        </div>
+    </nav>
+
+
+    <section class="properties-page">
+
+        <div class="page-header">
+
+            <h1>Find Your Property</h1>
+
+            {% if request.GET.location %}
+                <p>Search results for "{{ request.GET.location }}"</p>
+            {% else %}
+                <p>Explore properties available across Nepal.</p>
+            {% endif %}
+
+        </div>
+
+
+        <div class="property-grid">
+
+            {% for property in properties %}
+
+            <div class="property-card">
+
+                <div class="property-image">
+
+                    {% if property.type == "HOUSE" %}
+                        🏠
+                    {% elif property.type == "LAND" %}
+                        🌳
+                    {% else %}
+                        🏢
+                    {% endif %}
+
+                </div>
+
+
+                <div class="property-info">
+
+                    <span class="property-type">
+                        {{ property.type }}
+                    </span>
+
+                    <h2>{{ property.title }}</h2>
+
+                    <p class="location">
+                        📍 {{ property.location }}, Nepal
+                    </p>
+
+                    <h3>{{ property.price }}</h3>
+
+
+                    <div class="property-features">
+
+                        {% if property.bedrooms %}
+                            <span>🛏 {{ property.bedrooms }} Beds</span>
+                        {% endif %}
+
+                        {% if property.bathrooms %}
+                            <span>🛁 {{ property.bathrooms }} Baths</span>
+                        {% endif %}
+
+                        <span>📐 {{ property.area }}</span>
+
+                    </div>
+
+
+                    <a href="/properties/detail/" class="details-button">
+                        View Details
+                    </a>
+
+                </div>
+
+            </div>
+
+            {% empty %}
+
+            <div class="no-results">
+
+                <h2>No properties found</h2>
+
+                <p>
+                    We couldn't find any properties matching
+                    "{{ request.GET.location }}".
+                </p>
+
+                <a href="/properties/" class="details-button">
+                    View All Properties
+                </a>
+
+            </div>
+
+            {% endfor %}
+
+        </div>
+
+    </section>
+
+</body>
+</html>
