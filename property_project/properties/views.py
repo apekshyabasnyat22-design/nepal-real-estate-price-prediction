@@ -1,4 +1,16 @@
 from django.shortcuts import render
+import os
+import joblib
+import pandas as pd
+
+
+# Get the folder where this views.py file is located
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+# Load the trained ML model
+MODEL_PATH = os.path.join(BASE_DIR, "price_model.pkl")
+
+model = joblib.load(MODEL_PATH)
 
 
 def home(request):
