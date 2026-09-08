@@ -1,0 +1,257 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Undervalued Properties - Nepal Real Estate</title>
+
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Your CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
+
+</head>
+
+
+<body>
+
+
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+
+    <div class="container">
+
+        <a
+            class="navbar-brand fw-bold"
+            href="/"
+        >
+            Nepal Real Estate
+        </a>
+
+
+        <div class="navbar-nav ms-auto">
+
+            <a
+                class="nav-link"
+                href="/"
+            >
+                Home
+            </a>
+
+
+            <a
+                class="nav-link"
+                href="/properties/"
+            >
+                Properties
+            </a>
+
+
+            <a
+                class="nav-link"
+                href="/predict/"
+            >
+                Price Prediction
+            </a>
+
+
+            <a
+                class="nav-link active"
+                href="/undervalued/"
+            >
+                Undervalued
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+
+<!-- Page Header -->
+
+<section class="bg-light py-5">
+
+    <div class="container text-center">
+
+        <h1 class="fw-bold">
+            Potentially Undervalued Properties
+        </h1>
+
+        <p class="text-muted">
+            Properties where the listed price is lower than the
+            machine-learning estimated price.
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- Properties -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row g-4">
+
+
+            {% for property in properties %}
+
+            <div class="col-md-6 col-lg-4">
+
+                <div class="card h-100 shadow-sm">
+
+                    <div class="card-body">
+
+
+                        <h5 class="card-title fw-bold">
+
+                            {{ property.title }}
+
+                        </h5>
+
+
+                        <p class="text-muted">
+
+                            📍 {{ property.address }},
+                            {{ property.city }}
+
+                        </p>
+
+
+                        <hr>
+
+
+                        <!-- Listed Price -->
+
+                        <p class="mb-2">
+
+                            <small class="text-muted">
+                                Listed Price
+                            </small>
+
+                            <br>
+
+                            <strong class="fs-5">
+
+                                Rs.
+                                {{ property.price|floatformat:0 }}
+
+                            </strong>
+
+                        </p>
+
+
+
+                        <!-- Estimated Price -->
+
+                        <p class="mb-2">
+
+                            <small class="text-muted">
+                                Estimated Market Price
+                            </small>
+
+                            <br>
+
+                            <strong class="fs-5 text-primary">
+
+                                Rs.
+                                {{ property.predicted_price|floatformat:0 }}
+
+                            </strong>
+
+                        </p>
+
+
+
+                        <!-- Value Gap -->
+
+                        <p>
+
+                            <small class="text-muted">
+                                Potential Value Gap
+                            </small>
+
+                            <br>
+
+                            <span class="badge text-bg-success fs-6">
+
+                                {{ property.value_gap_pct|floatformat:2 }}%
+
+                            </span>
+
+                        </p>
+
+
+
+                        <a
+                            href="{% url 'property_detail' property.id %}"
+                            class="btn btn-outline-primary w-100 mt-3"
+                        >
+
+                            View Property
+
+                        </a>
+
+
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            {% empty %}
+
+            <div class="text-center">
+
+                <h4>
+                    No potentially undervalued properties found.
+                </h4>
+
+                <p class="text-muted">
+                    Check back later for new properties.
+                </p>
+
+            </div>
+
+            {% endfor %}
+
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- Bootstrap JavaScript -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
+</body>
+
+</html>

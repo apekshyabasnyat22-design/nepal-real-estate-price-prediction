@@ -6,6 +6,7 @@ from properties.views import (
     property_list,
     property_detail,
     predict_price,
+    undervalued_properties,
 )
 
 
@@ -13,7 +14,10 @@ urlpatterns = [
     path("admin/", admin.site.urls),
 
     path("", home, name="home"),
+      
 
+    path("undervalued/", undervalued_properties, name="undervalued"),
+    
     path(
         "properties/",
         property_list,
