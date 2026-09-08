@@ -3,49 +3,147 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>Property Details - Nepal Real Estate</title>
+    <title>{{ property.title }} - Nepal Real Estate</title>
 
-    <link rel="stylesheet" href="{% static 'properties/style.css' %}">
+    <link rel="stylesheet"
+          href="{% static 'properties/style.css' %}">
+
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet"
+          href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+    <style>
+        #map {
+            width: 100%;
+            height: 400px;
+            margin-top: 25px;
+            border-radius: 12px;
+        }
+    </style>
 </head>
 
 <body>
 
-    <nav>
-        <div class="logo">Nepal Real Estate</div>
+<nav>
+    <div class="logo">Nepal Real Estate</div>
 
-        <div class="nav-links">
-            <a href="/">Home</a>
-            <a href="/properties/">Properties</a>
-            <a href="#">About</a>
-        </div>
-    </nav>
+    <div class="nav-links">
+        <a href="/">Home</a>
+        <a href="/properties/">Properties</a>
+        <a href="#">About</a>
+    </div>
+</nav>
 
 
-    <section class="property-detail">
+<section class="property-detail">
 
-        <h1>House in Kathmandu</h1>
+    <h1>{{ property.title }}</h1>
 
-        <div class="detail-card">
+    <div class="detail-card">
 
-            <h2>Rs. 25,000,000</h2>
+        <h2>Rs. {{ property.price|floatformat:0 }}</h2>
 
-            <p><strong>Location:</strong> Kathmandu</p>
+        <p>
+            <strong>Location:</strong>
+            {{ property.address }}, {{ property.city }}
+        </p>
 
-            <p><strong>Bedrooms:</strong> 4</p>
+        {% if property.bedroom %}
+        <p>
+            <strong>Bedrooms:</strong>
+            {{ property.bedroom }}
+        </p>
+        {% endif %}
 
-            <p><strong>Bathrooms:</strong> 3</p>
+        {% if property.bathroom %}
+        <p>
+            <strong>Bathrooms:</strong>
+            {{ property.bathroom }}
+        </p>
+        {% endif %}
 
-            <p><strong>Area:</strong> 2,500 sq.ft</p>
+        {% if property.area %}
+        <p>
+            <strong>Area:</strong>
+            {{ property.area|floatformat:0 }} sq.ft
+        </p>
+        {% endif %}
 
-            <p><strong>Property Type:</strong> House</p>
+        {% if property.floors %}
+        <p>
+            <strong>Floors:</strong>
+            {{ property.floors }}
+        </p>
+        {% endif %}
 
-            <button>Contact Seller</button>
+        {% if property.parking %}
+        <p>
+            <strong>Parking:</strong>
+            {{ property.parking }}
+        </p>
+        {% endif %}
 
-        </div>
+        {% if property.face %}
+        <p>
+            <strong>Facing:</strong>
+            {{ property.face }}
+        </p>
+        {% endif %}
 
-        <a href="/properties/">← Back to Properties</a>
+        {% if property.road_width %}
+        <p>
+            <strong>Road Width:</strong>
+            {{ property.road_width }} ft
+        </p>
+        {% endif %}
 
-    </section>
+    </div>
+
+
+    <h2>Property Location</h2>
+
+    <div id="map"></div>
+
+
+    <br>
+
+    <a href="/properties/">← Back to Properties</a>
+
+</section>
+
+
+<!-- Leaflet JavaScript -->
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+
+    // Kathmandu coordinates
+    const latitude = 27.7172;
+    const longitude = 85.3240;
+
+    const map = L.map('map').setView(
+        [latitude, longitude],
+        12
+    );
+
+    L.tileLayer(
+        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        {
+            maxZoom: 19,
+            attribution: '&copy; OpenStreetMap contributors'
+        }
+    ).addTo(map);
+
+    const marker = L.marker(
+        [latitude, longitude]
+    ).addTo(map);
+
+    marker.bindPopup(
+        "<b>{{ property.title|escapejs }}</b><br>" +
+        "{{ property.city|escapejs }}, Nepal"
+    ).openPopup();
+
+</script>
 
 </body>
 </html>

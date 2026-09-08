@@ -1,89 +1,640 @@
+{% load static %}
 
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Property Price Prediction</title>
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
 
-    {% load static %}
-    <link rel="stylesheet" href="{% static 'properties/style.css' %}">
+    <title>Price Prediction - Nepal Real Estate</title>
+
+
+    <!-- Bootstrap 5 -->
+
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+
+    <!-- Your CSS -->
+
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
+
 </head>
+
 
 <body>
 
+
+<!-- ============================= -->
+<!-- Navigation -->
+<!-- ============================= -->
+
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+
     <div class="container">
 
-        <h1>🏠 Property Price Prediction</h1>
+        <a
+            class="navbar-brand fw-bold"
+            href="/"
+        >
+            Nepal Real Estate
+        </a>
 
-        <p>Enter the property details to estimate its market price.</p>
 
-        <form method="POST" class="prediction-form">
+        <div class="navbar-nav ms-auto">
 
-            {% csrf_token %}
+            <a
+                class="nav-link"
+                href="/"
+            >
+                Home
+            </a>
 
-            <label>City</label>
-            <select name="city" required>
-                <option value="Kathmandu">Kathmandu</option>
-                <option value="Lalitpur">Lalitpur</option>
-                <option value="Bhaktapur">Bhaktapur</option>
-            </select>
 
-            <label>Area (sq.ft)</label>
-            <input type="number" name="area" step="0.01" required>
+            <a
+                class="nav-link"
+                href="/properties/"
+            >
+                Properties
+            </a>
 
-            <label>Bedrooms</label>
-            <input type="number" name="bedroom" min="0" required>
 
-            <label>Bathrooms</label>
-            <input type="number" name="bathroom" min="0" required>
+            <a
+                class="nav-link active"
+                href="/predict/"
+            >
+                Price Prediction
+            </a>
 
-            <label>Floors</label>
-            <input type="number" name="floors" min="0" required>
 
-            <label>Parking</label>
-            <input type="number" name="parking" min="0" required>
+            <a
+                class="nav-link"
+                href="/undervalued/"
+            >
+                Undervalued
+            </a>
 
-            <label>Road Width (feet)</label>
-            <input type="number" name="road_width" step="0.01" required>
-
-            <label>Property Age</label>
-            <input type="number" name="property_age" min="0" required>
-
-            <label>Face</label>
-            <select name="face" required>
-                <option value="East">East</option>
-                <option value="West">West</option>
-                <option value="North">North</option>
-                <option value="South">South</option>
-            </select>
-
-            <label>Road Type</label>
-            <select name="road_type" required>
-                <option value="Blacktopped">Blacktopped</option>
-                <option value="Gravelled">Gravelled</option>
-                <option value="Soil Stabilized">Soil Stabilized</option>
-            </select>
-
-            <label>Amenities Count</label>
-            <input type="number" name="amenity_count" min="0" required>
-
-            <button type="submit">Predict Price</button>
-
-        </form>
-
-        {% if prediction %}
-            <div class="prediction-result">
-                <h2>Estimated Property Price</h2>
-                <h1>Rs. {{ prediction }}</h1>
-            </div>
-        {% endif %}
+        </div>
 
     </div>
 
+</nav>
+
+
+
+<!-- ============================= -->
+<!-- Header -->
+<!-- ============================= -->
+
+<section class="bg-light py-5">
+
+    <div class="container text-center">
+
+        <h1 class="fw-bold">
+            Property Price Prediction
+        </h1>
+
+        <p class="text-muted">
+
+            Enter property details to estimate
+            its market price using our
+            machine-learning model.
+
+        </p>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================= -->
+<!-- Prediction Form -->
+<!-- ============================= -->
+
+<section class="py-5">
+
+    <div class="container">
+
+        <div class="row justify-content-center">
+
+            <div class="col-lg-8">
+
+
+                <div class="card shadow-sm">
+
+                    <div class="card-body p-4">
+
+
+                        <h3 class="fw-bold mb-4">
+
+                            Enter Property Details
+
+                        </h3>
+
+
+                        <form method="POST">
+
+                            {% csrf_token %}
+
+
+                            <!-- ============================= -->
+                            <!-- City -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    City
+                                </label>
+
+
+                                <input
+                                    type="text"
+                                    name="city"
+                                    class="form-control"
+                                    placeholder="e.g. Kathmandu"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Neighborhood -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Neighborhood
+                                </label>
+
+
+                                <select
+                                    name="neighborhood"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select neighborhood
+                                    </option>
+
+
+                                    {% for neighborhood in neighborhoods %}
+
+                                    <option
+                                        value="{{ neighborhood }}"
+                                    >
+                                        {{ neighborhood }}
+                                    </option>
+
+                                    {% endfor %}
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Area -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Area (sq.ft)
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="area"
+                                    class="form-control"
+                                    placeholder="e.g. 1500"
+                                    step="0.01"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Bedrooms + Bathrooms -->
+                            <!-- ============================= -->
+
+                            <div class="row">
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        class="form-label fw-semibold"
+                                    >
+                                        Bedrooms
+                                    </label>
+
+
+                                    <input
+                                        type="number"
+                                        name="bedroom"
+                                        class="form-control"
+                                        min="0"
+                                        required
+                                    >
+
+                                </div>
+
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        class="form-label fw-semibold"
+                                    >
+                                        Bathrooms
+                                    </label>
+
+
+                                    <input
+                                        type="number"
+                                        name="bathroom"
+                                        class="form-control"
+                                        min="0"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Floors + Parking -->
+                            <!-- ============================= -->
+
+                            <div class="row">
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        class="form-label fw-semibold"
+                                    >
+                                        Floors
+                                    </label>
+
+
+                                    <input
+                                        type="number"
+                                        name="floors"
+                                        class="form-control"
+                                        min="1"
+                                        required
+                                    >
+
+                                </div>
+
+
+
+                                <div class="col-md-6 mb-3">
+
+                                    <label
+                                        class="form-label fw-semibold"
+                                    >
+                                        Parking Spaces
+                                    </label>
+
+
+                                    <input
+                                        type="number"
+                                        name="parking"
+                                        class="form-control"
+                                        min="0"
+                                        required
+                                    >
+
+                                </div>
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Road Width -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Road Width (ft)
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="road_width"
+                                    class="form-control"
+                                    step="0.1"
+                                    placeholder="e.g. 20"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Property Age -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Property Age
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="property_age"
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="e.g. 5"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Facing -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Facing
+                                </label>
+
+
+                                <select
+                                    name="face"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select facing
+                                    </option>
+
+
+                                    <option value="East">
+                                        East
+                                    </option>
+
+
+                                    <option value="West">
+                                        West
+                                    </option>
+
+
+                                    <option value="North">
+                                        North
+                                    </option>
+
+
+                                    <option value="South">
+                                        South
+                                    </option>
+
+
+                                    <option value="North East">
+                                        North East
+                                    </option>
+
+
+                                    <option value="North West">
+                                        North West
+                                    </option>
+
+
+                                    <option value="South East">
+                                        South East
+                                    </option>
+
+
+                                    <option value="South West">
+                                        South West
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Road Type -->
+                            <!-- ============================= -->
+
+                            <div class="mb-3">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Road Type
+                                </label>
+
+
+                                <select
+                                    name="road_type"
+                                    class="form-select"
+                                    required
+                                >
+
+                                    <option value="">
+                                        Select road type
+                                    </option>
+
+
+                                    <option value="Blacktopped">
+                                        Blacktopped
+                                    </option>
+
+
+                                    <option value="Gravelled">
+                                        Gravelled
+                                    </option>
+
+
+                                    <option value="Graveled">
+                                        Graveled
+                                    </option>
+
+
+                                    <option value="Paved">
+                                        Paved
+                                    </option>
+
+
+                                    <option value="Soil Stabilized">
+                                        Soil Stabilized
+                                    </option>
+
+
+                                    <option value="Alley">
+                                        Alley
+                                    </option>
+
+                                </select>
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Amenities -->
+                            <!-- ============================= -->
+
+                            <div class="mb-4">
+
+                                <label
+                                    class="form-label fw-semibold"
+                                >
+                                    Number of Amenities
+                                </label>
+
+
+                                <input
+                                    type="number"
+                                    name="amenity_count"
+                                    class="form-control"
+                                    min="0"
+                                    placeholder="e.g. 5"
+                                    required
+                                >
+
+                            </div>
+
+
+
+                            <!-- ============================= -->
+                            <!-- Submit -->
+                            <!-- ============================= -->
+
+                            <button
+                                type="submit"
+                                class="btn btn-primary w-100 py-2"
+                            >
+
+                                Predict Property Price
+
+                            </button>
+
+
+                        </form>
+
+
+                    </div>
+
+                </div>
+
+
+
+                <!-- ============================= -->
+                <!-- Prediction Result -->
+                <!-- ============================= -->
+
+                {% if prediction %}
+
+                <div
+                    class="card shadow-sm mt-4 border-0"
+                >
+
+                    <div
+                        class="card-body text-center p-4"
+                    >
+
+                        <h5 class="text-muted">
+
+                            Estimated Property Price
+
+                        </h5>
+
+
+                        <h1
+                            class="fw-bold text-primary mt-3"
+                        >
+
+                            Rs. {{ prediction }}
+
+                        </h1>
+
+
+                        <p class="text-muted mb-0">
+
+                            This estimate is generated
+                            using the trained Random
+                            Forest model.
+
+                        </p>
+
+                    </div>
+
+                </div>
+
+                {% endif %}
+
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+
+<!-- ============================= -->
+<!-- Bootstrap JavaScript -->
+<!-- ============================= -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
+></script>
+
+
 </body>
+
 </html>
-
-
-

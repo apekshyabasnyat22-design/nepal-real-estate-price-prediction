@@ -1,55 +1,138 @@
 {% load static %}
 
 <!DOCTYPE html>
-<html>
+
+<html lang="en">
+
 <head>
-    <title>Nepal Real Estate</title>
-    <link rel="stylesheet" href="{% static 'properties/style.css' %}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+```
+<title>Nepal Real Estate</title>
+
+<!-- Bootstrap 5 -->
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+
+<!-- Your CSS -->
+<link rel="stylesheet" href="{% static 'properties/style.css' %}">
+```
+
 </head>
 
 <body>
 
-    <nav>
-        <div class="logo">Nepal Real Estate</div>
+```
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+    <div class="container">
 
-        <div class="nav-links">
-            <a href="#">Home</a>
-            <a href="#">Properties</a>
-            <a href="#">About</a>
+        <a class="navbar-brand fw-bold" href="/">
+            Nepal Real Estate
+        </a>
+
+        <div class="navbar-nav ms-auto">
+
+            <a class="nav-link" href="/">
+                Home
+            </a>
+
+            <a class="nav-link" href="/properties/">
+                Properties
+            </a>
+
+            <a class="nav-link" href="/predict/">
+                Price Prediction
+            </a>
+
+            <a class="nav-link" href="/undervalued/">
+                Undervalued
+            </a>
+
         </div>
-    </nav>
+
+    </div>
+</nav>
 
 
-    <section class="hero">
+<!-- Hero Section -->
+<section class="bg-light py-5">
 
-        <h1>Find Your Perfect Property in Nepal</h1>
+    <div class="container text-center py-5">
 
-        <p>
+        <h1 class="display-4 fw-bold">
+            Find Your Perfect Property in Nepal
+        </h1>
+
+        <p class="lead text-muted mt-3">
             Explore houses, apartments and land across Nepal.
         </p>
 
-        <form class="search-box" action="/properties/" method="GET">
-            
-    <input
-        type="text"
-        name="location"
-        placeholder="Search by location..."
-    >
-    <button type="submit">Search</button>
+
+        <!-- Search -->
+        <form
+            class="row justify-content-center mt-4"
+            action="/properties/"
+            method="GET"
+        >
+
+            <div class="col-md-6">
+
+                <input
+                    type="text"
+                    name="location"
+                    class="form-control form-control-lg"
+                    placeholder="Search by location..."
+                >
+
+            </div>
+
+            <div class="col-md-auto mt-2 mt-md-0">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary btn-lg"
+                >
+                    Search
+                </button>
+
+            </div>
+
         </form>
 
-    </section>
+    </div>
+
+</section>
 
 
-    <section class="welcome">
+<!-- Welcome Section -->
+<section class="py-5">
 
-        <h2>Explore Properties</h2>
+    <div class="container text-center">
 
-        <p>
+        <h2 class="fw-bold">
+            Explore Properties
+        </h2>
+
+        <p class="text-muted">
             Find properties that match your needs, budget and location.
         </p>
 
-    </section>
+        <a
+            href="/properties/"
+            class="btn btn-outline-primary mt-3"
+        >
+            Browse Properties
+        </a>
+
+    </div>
+
+</section>
+
+
+<!-- Bootstrap JavaScript -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+```
 
 </body>
 </html>
