@@ -73,6 +73,12 @@ class Command(BaseCommand):
                     posted=row.get("Posted", ""),
 
                     amenities=row.get("Amenities", ""),
+
+                    predicted_price=float(row["Predicted_Price"])
+                    if row.get("Predicted_Price") else None,
+
+                    value_gap_pct=float(row["Value_Gap_Pct"])
+                    if row.get("Value_Gap_Pct") else None,
                 )
 
                 count += 1

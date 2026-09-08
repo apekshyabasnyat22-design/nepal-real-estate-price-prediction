@@ -29,5 +29,12 @@ class Property(models.Model):
     posted = models.CharField(max_length=100, null=True, blank=True)
     amenities = models.TextField(null=True, blank=True)
 
+
+    predicted_price = models.FloatField(null=True, blank=True)
+    value_gap_pct = models.FloatField(null=True, blank=True)
+    
+    
     def __str__(self):
         return self.title
+
+    
