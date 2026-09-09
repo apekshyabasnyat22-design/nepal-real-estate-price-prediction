@@ -32,8 +32,10 @@ class Property(models.Model):
 
     predicted_price = models.FloatField(null=True, blank=True)
     value_gap_pct = models.FloatField(null=True, blank=True)
-    
-    
+
+    latitude = models.FloatField(null=True, blank=True)
+    longitude = models.FloatField(null=True, blank=True)
+
     def __str__(self):
         return self.title
 
