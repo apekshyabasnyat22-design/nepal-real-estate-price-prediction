@@ -6,7 +6,6 @@
 <head>
     <title>{{ property.title }} - Nepal Real Estate</title>
 
-```
 <link rel="stylesheet"
       href="{% static 'properties/style.css' %}">
 
@@ -21,8 +20,22 @@
         margin-top: 25px;
         border-radius: 12px;
     }
+
+    .price-analysis {
+        margin-top: 20px;
+        padding: 20px;
+        border-radius: 12px;
+        background-color: #f8f9fa;
+    }
+
+    .price-analysis.undervalued {
+        background-color: #e6f4ea;
+    }
+
+    .price-analysis.overvalued {
+        background-color: #fdecea;
+    }
 </style>
-```
 
 </head>
 
@@ -31,19 +44,16 @@
 <nav>
     <div class="logo">Nepal Real Estate</div>
 
-```
 <div class="nav-links">
     <a href="/">Home</a>
     <a href="/properties/">Properties</a>
     <a href="#">About</a>
 </div>
-```
 
 </nav>
 
 <section class="property-detail">
 
-```
 <h1>{{ property.title }}</h1>
 
 <div class="detail-card">
@@ -104,7 +114,50 @@
     </p>
     {% endif %}
 
+    {% if price_per_sqft %}
+    <p>
+        <strong>Price per sq.ft:</strong>
+        Rs. {{ price_per_sqft|floatformat:0 }}
+    </p>
+    {% endif %}
+
 </div>
+
+
+<!-- ML Price Analysis -->
+
+{% if property.predicted_price %}
+
+<div class="price-analysis
+    {% if price_difference_pct < 0 %}undervalued{% else %}overvalued{% endif %}"
+>
+
+    <h3>Price Analysis (ML Estimate)</h3>
+
+    <p>
+        <strong>Estimated Price:</strong>
+        Rs. {{ property.predicted_price|floatformat:0 }}
+    </p>
+
+    <p>
+        <strong>Actual Price:</strong>
+        Rs. {{ property.price|floatformat:0 }}
+    </p>
+
+    <p>
+        <strong>Difference:</strong>
+
+        {% if price_difference_pct < 0 %}
+            {{ price_difference_pct|floatformat:1 }}% below estimated price
+            (potentially undervalued)
+        {% else %}
+            {{ price_difference_pct|floatformat:1 }}% above estimated price
+        {% endif %}
+    </p>
+
+</div>
+
+{% endif %}
 
 
 <h2>Property Location</h2>
@@ -115,7 +168,6 @@
 <br>
 
 <a href="/properties/">← Back to Properties</a>
-```
 
 </section>
 
@@ -156,7 +208,8 @@
 
         marker.bindPopup(
             "<b>{{ property.title|escapejs }}</b><br>" +
-            "{{ property.city|escapejs }}, Nepal"
+            "Rs. {{ property.price|floatformat:0 }}<br>" +
+            "{{ property.address|escapejs }}, {{ property.city|escapejs }}"
         ).openPopup();
 
     }
@@ -174,8 +227,9 @@
         ).addTo(map);
 
         marker.bindPopup(
-            "<b>Location unavailable</b><br>" +
-            "Exact coordinates are not available for this property."
+            "<b>{{ property.title|escapejs }}</b><br>" +
+            "Rs. {{ property.price|floatformat:0 }}<br>" +
+            "Exact location unavailable — showing approximate area."
         ).openPopup();
 
     }

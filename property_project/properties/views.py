@@ -65,11 +65,15 @@ def home(request):
 def property_list(request):
 
     location = request.GET.get("location")
+    min_price = request.GET.get("min_price")
+    max_price = request.GET.get("max_price")
+    bedrooms = request.GET.get("bedrooms")
+    bathrooms = request.GET.get("bathrooms")
 
     properties = Property.objects.all().order_by("-id")
 
+    # Location search
     if location:
-
         location = location.strip()
 
         properties = properties.filter(
@@ -78,14 +82,55 @@ def property_list(request):
             Q(title__icontains=location)
         )
 
+    # Minimum price
+    if min_price:
+        properties = properties.filter(
+            price__gte=min_price
+        )
+
+    # Maximum price
+    if max_price:
+        properties = properties.filter(
+            price__lte=max_price
+        )
+
+    # Bedrooms
+    if bedrooms:
+        properties = properties.filter(
+            bedroom__gte=bedrooms
+        )
+
+    # Bathrooms
+    if bathrooms:
+        properties = properties.filter(
+            bathroom__gte=bathrooms
+        )
+
+        # Sorting
+    sort = request.GET.get("sort")
+
+    if sort == "price_low":
+        properties = properties.order_by("price")
+
+    elif sort == "price_high":
+        properties = properties.order_by("-price")
+
+    else:
+        properties = properties.order_by("-id")
+
     return render(
         request,
         "properties/property_list.html",
         {
-            "properties": properties
+            "properties": properties,
+            "location": location,
+            "min_price": min_price,
+            "max_price": max_price,
+            "bedrooms": bedrooms,
+            "bathrooms": bathrooms,
+            "sort": sort,
         }
     )
-
 
 # -----------------------------
 # Property detail
@@ -98,11 +143,26 @@ def property_detail(request, property_id):
         id=property_id
     )
 
+    price_per_sqft = None
+
+    if property.price and property.area:
+        price_per_sqft = property.price / property.area
+
+    price_difference = None
+    price_difference_pct = None
+
+    if property.predicted_price:
+        price_difference = property.price - property.predicted_price
+        price_difference_pct = property.value_gap_pct
+
     return render(
         request,
         "properties/property_detail.html",
         {
-            "property": property
+            "property": property,
+            "price_per_sqft": price_per_sqft,
+            "price_difference": price_difference,
+            "price_difference_pct": price_difference_pct,
         }
     )
 
