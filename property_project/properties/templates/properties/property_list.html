@@ -1,30 +1,35 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Properties - Nepal Real Estate</title>
+    <title>Properties - Nepal Real Estate</title>
 
-<!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-<!-- Your CSS -->
-<link rel="stylesheet" href="{% static 'properties/style.css' %}">
-```
+    <!-- Your CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
 
 </head>
 
 <body>
 
-```
 <!-- Navigation -->
+
 <nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+
     <div class="container">
 
         <a class="navbar-brand fw-bold" href="/">
@@ -52,10 +57,12 @@
         </div>
 
     </div>
+
 </nav>
 
 
 <!-- Page Header -->
+
 <section class="bg-light py-5">
 
     <div class="container text-center">
@@ -73,35 +80,221 @@
 </section>
 
 
-<!-- Search -->
+<!-- Search and Filters -->
+
 <div class="container mt-4">
 
     <form
         action="/properties/"
         method="GET"
-        class="row justify-content-center"
+        class="card shadow-sm p-4"
     >
 
-        <div class="col-md-6">
+        <h5 class="fw-bold mb-3">
+            Search & Filter Properties
+        </h5>
 
-            <input
-                type="text"
-                name="location"
-                value="{{ request.GET.location }}"
-                class="form-control"
-                placeholder="Search by city..."
-            >
+        <div class="row g-3">
 
-        </div>
 
-        <div class="col-md-auto mt-2 mt-md-0">
+            <!-- Location -->
 
-            <button
-                type="submit"
-                class="btn btn-primary"
-            >
-                Search
-            </button>
+            <div class="col-md-6">
+
+                <label class="form-label">
+                    Location
+                </label>
+
+                <input
+                    type="text"
+                    name="location"
+                    value="{{ request.GET.location }}"
+                    class="form-control"
+                    placeholder="Search by city or address..."
+                >
+
+            </div>
+
+
+            <!-- Minimum Price -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Minimum Price
+                </label>
+
+                <input
+                    type="number"
+                    name="min_price"
+                    value="{{ request.GET.min_price }}"
+                    class="form-control"
+                    placeholder="e.g. 5000000"
+                >
+
+            </div>
+
+
+            <!-- Maximum Price -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Maximum Price
+                </label>
+
+                <input
+                    type="number"
+                    name="max_price"
+                    value="{{ request.GET.max_price }}"
+                    class="form-control"
+                    placeholder="e.g. 30000000"
+                >
+
+            </div>
+
+
+            <!-- Bedrooms -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Minimum Bedrooms
+                </label>
+
+                <select
+                    name="bedrooms"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        Any
+                    </option>
+
+                    <option value="1"
+                        {% if request.GET.bedrooms == "1" %}selected{% endif %}>
+                        1+
+                    </option>
+
+                    <option value="2"
+                        {% if request.GET.bedrooms == "2" %}selected{% endif %}>
+                        2+
+                    </option>
+
+                    <option value="3"
+                        {% if request.GET.bedrooms == "3" %}selected{% endif %}>
+                        3+
+                    </option>
+
+                    <option value="4"
+                        {% if request.GET.bedrooms == "4" %}selected{% endif %}>
+                        4+
+                    </option>
+
+                    <option value="5"
+                        {% if request.GET.bedrooms == "5" %}selected{% endif %}>
+                        5+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Bathrooms -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Minimum Bathrooms
+                </label>
+
+                <select
+                    name="bathrooms"
+                    class="form-select"
+                >
+
+                    <option value="">
+                        Any
+                    </option>
+
+                    <option value="1"
+                        {% if request.GET.bathrooms == "1" %}selected{% endif %}>
+                        1+
+                    </option>
+
+                    <option value="2"
+                        {% if request.GET.bathrooms == "2" %}selected{% endif %}>
+                        2+
+                    </option>
+
+                    <option value="3"
+                        {% if request.GET.bathrooms == "3" %}selected{% endif %}>
+                        3+
+                    </option>
+
+                    <option value="4"
+                        {% if request.GET.bathrooms == "4" %}selected{% endif %}>
+                        4+
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Sorting -->
+
+            <div class="col-md-3">
+
+                <label class="form-label">
+                    Sort By
+                </label>
+
+                <select
+                    name="sort"
+                    class="form-select"
+                >
+
+                    <option value=""
+                        {% if not request.GET.sort %}selected{% endif %}>
+                        Newest First
+                    </option>
+
+                    <option value="price_low"
+                        {% if request.GET.sort == "price_low" %}selected{% endif %}>
+                        Price: Low to High
+                    </option>
+
+                    <option value="price_high"
+                        {% if request.GET.sort == "price_high" %}selected{% endif %}>
+                        Price: High to Low
+                    </option>
+
+                </select>
+
+            </div>
+
+
+            <!-- Buttons -->
+
+            <div class="col-md-3 d-flex align-items-end gap-2">
+
+                <button
+                    type="submit"
+                    class="btn btn-primary"
+                >
+                    Search & Filter
+                </button>
+
+                <a
+                    href="/properties/"
+                    class="btn btn-outline-secondary"
+                >
+                    Clear
+                </a>
+
+            </div>
 
         </div>
 
@@ -111,9 +304,24 @@
 
 
 <!-- Property Cards -->
+
 <section class="py-5">
 
     <div class="container">
+
+
+        <!-- Result Count -->
+
+        <div class="mb-4">
+
+            <h5 class="text-muted">
+                {{ properties.paginator.count }} properties found
+            </h5>
+
+        </div>
+
+
+        <!-- Property Cards -->
 
         <div class="row g-4">
 
@@ -141,37 +349,65 @@
 
                         <div class="row text-center">
 
+
                             {% if property.area %}
+
                             <div class="col">
-                                <small class="text-muted">Area</small>
+
+                                <small class="text-muted">
+                                    Area
+                                </small>
+
                                 <br>
+
                                 <strong>
                                     {{ property.area|floatformat:0 }} sq.ft
                                 </strong>
+
                             </div>
+
                             {% endif %}
 
+
                             {% if property.bedroom %}
+
                             <div class="col">
-                                <small class="text-muted">Bedrooms</small>
+
+                                <small class="text-muted">
+                                    Bedrooms
+                                </small>
+
                                 <br>
+
                                 <strong>
                                     {{ property.bedroom }}
                                 </strong>
+
                             </div>
+
                             {% endif %}
 
+
                             {% if property.bathroom %}
+
                             <div class="col">
-                                <small class="text-muted">Bathrooms</small>
+
+                                <small class="text-muted">
+                                    Bathrooms
+                                </small>
+
                                 <br>
+
                                 <strong>
                                     {{ property.bathroom }}
                                 </strong>
+
                             </div>
+
                             {% endif %}
 
                         </div>
+
 
                         <a
                             href="{% url 'property_detail' property.id %}"
@@ -186,14 +422,17 @@
 
             </div>
 
+
             {% empty %}
 
             <div class="text-center">
 
-                <h4>No properties found.</h4>
+                <h4>
+                    No properties found.
+                </h4>
 
                 <p class="text-muted">
-                    Try searching for another location.
+                    Try changing your search or filter options.
                 </p>
 
             </div>
@@ -202,14 +441,85 @@
 
         </div>
 
+
+        <!-- Pagination -->
+
+        {% if properties.paginator.num_pages > 1 %}
+
+        <div class="d-flex justify-content-center mt-5">
+
+            <nav>
+
+                <ul class="pagination">
+
+
+                    <!-- Previous -->
+
+                    {% if properties.has_previous %}
+
+                    <li class="page-item">
+
+                        <a
+                            class="page-link"
+                            href="?page={{ properties.previous_page_number }}&location={{ request.GET.location }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&bedrooms={{ request.GET.bedrooms }}&bathrooms={{ request.GET.bathrooms }}&sort={{ request.GET.sort }}"
+                        >
+                            Previous
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+
+                    <!-- Current Page -->
+
+                    <li class="page-item active">
+
+                        <span class="page-link">
+                            Page {{ properties.number }}
+                            of {{ properties.paginator.num_pages }}
+                        </span>
+
+                    </li>
+
+
+                    <!-- Next -->
+
+                    {% if properties.has_next %}
+
+                    <li class="page-item">
+
+                        <a
+                            class="page-link"
+                            href="?page={{ properties.next_page_number }}&location={{ request.GET.location }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&bedrooms={{ request.GET.bedrooms }}&bathrooms={{ request.GET.bathrooms }}&sort={{ request.GET.sort }}"
+                        >
+                            Next
+                        </a>
+
+                    </li>
+
+                    {% endif %}
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+        {% endif %}
+
+
     </div>
 
 </section>
 
 
 <!-- Bootstrap JavaScript -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-```
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
 
 </body>
+
 </html>
