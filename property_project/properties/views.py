@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
 from django.db.models import Q
+from django.db import models
 
 from .models import Property
 
@@ -52,9 +53,24 @@ neighborhoods = sorted(
 
 def home(request):
 
+    total_properties = Property.objects.count()
+
+    avg_price = Property.objects.aggregate(
+        models.Avg("price")
+    )["price__avg"]
+
+    undervalued_count = Property.objects.filter(
+        value_gap_pct__lt=0
+    ).count()
+
     return render(
         request,
-        "properties/home.html"
+        "properties/home.html",
+        {
+            "total_properties": total_properties,
+            "avg_price": avg_price,
+            "undervalued_count": undervalued_count,
+        }
     )
 
 
@@ -337,10 +353,14 @@ def predict_price(request):
     # -----------------------------
 
     return render(
-        request,
-        "properties/prediction.html",
-        {
-            "prediction": prediction,
-            "neighborhoods": neighborhoods
-        }
-    )
+    request,
+    "properties/prediction.html",
+    {
+        "prediction": prediction,
+        "neighborhoods": neighborhoods
+    }
+)
+
+
+def about(request):
+    return render(request, "properties/about.html")
