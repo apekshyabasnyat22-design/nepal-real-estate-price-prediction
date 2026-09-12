@@ -1,53 +1,68 @@
 {% load static %}
 
 <!DOCTYPE html>
-
 <html lang="en">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-```
-<title>Nepal Real Estate</title>
+    <title>Nepal Real Estate | Data-Driven Property Analysis</title>
 
-<!-- Bootstrap 5 -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-<!-- Your CSS -->
-<link rel="stylesheet" href="{% static 'properties/style.css' %}">
-```
-
+    <!-- Custom CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
 </head>
 
 <body>
 
-```
-<!-- Navigation -->
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<!-- ================= NAVBAR ================= -->
+
+<nav class="navbar navbar-expand-lg navbar-dark main-navbar">
     <div class="container">
 
         <a class="navbar-brand fw-bold" href="/">
-            Nepal Real Estate
+            Nepal<span>Real Estate</span>
         </a>
 
-        <div class="navbar-nav ms-auto">
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-            <a class="nav-link" href="/">
-                Home
-            </a>
+        <div class="collapse navbar-collapse" id="mainNavbar">
 
-            <a class="nav-link" href="/properties/">
-                Properties
-            </a>
+            <div class="navbar-nav ms-auto">
 
-            <a class="nav-link" href="/predict/">
-                Price Prediction
-            </a>
+                <a class="nav-link active" href="/">
+                    Home
+                </a>
 
-            <a class="nav-link" href="/undervalued/">
-                Undervalued
-            </a>
+                <a class="nav-link" href="/properties/">
+                    Properties
+                </a>
+
+                <a class="nav-link" href="/predict/">
+                    Price Prediction
+                </a>
+
+                <a class="nav-link" href="/undervalued/">
+                    Value Opportunities
+                </a>
+
+            </div>
 
         </div>
 
@@ -55,84 +70,619 @@
 </nav>
 
 
-<!-- Hero Section -->
-<section class="bg-light py-5">
+<!-- ================= HERO ================= -->
 
-    <div class="container text-center py-5">
+<section class="hero-section">
 
-        <h1 class="display-4 fw-bold">
-            Find Your Perfect Property in Nepal
-        </h1>
+    <div class="container">
 
-        <p class="lead text-muted mt-3">
-            Explore houses, apartments and land across Nepal.
+        <div class="row align-items-center g-5">
+
+            <!-- Left -->
+
+            <div class="col-lg-7">
+
+                <div class="hero-label">
+                    DATA-DRIVEN REAL ESTATE
+                </div>
+
+                <h1>
+                    Understand the
+                    <span>value</span>
+                    behind every property.
+                </h1>
+
+                <p class="hero-description">
+                    Explore property listings across Nepal and use
+                    machine-learning price estimates to make
+                    more informed property decisions.
+                </p>
+
+
+                <!-- Search -->
+
+                <form
+                    action="/properties/"
+                    method="GET"
+                    class="hero-search"
+                >
+
+                    <div class="search-input-wrapper">
+
+                        <span class="search-icon">⌕</span>
+
+                        <input
+                            type="text"
+                            name="location"
+                            placeholder="Search by city or location..."
+                        >
+
+                    </div>
+
+                    <button type="submit">
+                        Search Properties
+                    </button>
+
+                </form>
+
+
+                <!-- Quick links -->
+
+                <div class="hero-links">
+
+                    <a href="/properties/">
+                        Browse Properties →
+                    </a>
+
+                    <a href="/predict/">
+                        Predict a Price →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Right -->
+
+            <div class="col-lg-5">
+
+                <div class="analysis-card">
+
+                    <div class="analysis-header">
+
+                        <div class="analysis-icon">
+                            ML
+                        </div>
+
+                        <div>
+                            <small>PRICE INTELLIGENCE</small>
+
+                            <h3>
+                                Smarter Property Decisions
+                            </h3>
+                        </div>
+
+                    </div>
+
+
+                    <p class="analysis-description">
+                        Compare a property's asking price with
+                        its machine-learning estimated value.
+                    </p>
+
+
+                    <div class="price-comparison">
+
+                        <div>
+                            <small>LISTED PRICE</small>
+
+                            <strong>
+                                Rs. 90 Lakh
+                            </strong>
+                        </div>
+
+                        <div>
+                            <small>ML ESTIMATE</small>
+
+                            <strong>
+                                Rs. 1.10 Cr
+                            </strong>
+                        </div>
+
+                    </div>
+
+
+                    <div class="value-result">
+
+                        <div class="value-dot"></div>
+
+                        <div>
+                            <strong>Potentially Undervalued</strong>
+
+                            <small>
+                                18.2% below estimated value
+                            </small>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= STATS ================= -->
+
+<section class="stats-section">
+
+    <div class="container">
+
+        <div class="row g-0">
+
+            <div class="col-md-4 stat-box">
+
+                <div class="stat-number">
+                    {{ total_properties }}
+                </div>
+
+                <div class="stat-label">
+                    Properties Analyzed
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 stat-box">
+
+                <div class="stat-number">
+                    Rs. {{ avg_price|floatformat:0 }}
+                </div>
+
+                <div class="stat-label">
+                    Average Property Price
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4 stat-box">
+
+                <div class="stat-number">
+                    {{ undervalued_count }}
+                </div>
+
+                <div class="stat-label">
+                    Potentially Undervalued Listings
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= PROBLEM ================= -->
+
+<section class="problem-section">
+
+    <div class="container">
+
+        <div class="section-label">
+            THE PROBLEM
+        </div>
+
+        <h2>
+            Is the property really worth<br>
+            the asking price?
+        </h2>
+
+        <p class="section-intro">
+            Property prices can be difficult to evaluate.
+            Our system provides a data-driven reference point
+            to help users compare asking prices with estimated values.
         </p>
 
 
-        <!-- Search -->
-        <form
-            class="row justify-content-center mt-4"
-            action="/properties/"
-            method="GET"
-        >
+        <div class="row g-4 mt-4">
+
+            <div class="col-md-4">
+
+                <div class="problem-item">
+
+                    <span>01</span>
+
+                    <h4>
+                        Traditional Search
+                    </h4>
+
+                    <p>
+                        Buyers often compare listings manually
+                        without knowing what a property's expected
+                        market value could be.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="problem-item">
+
+                    <span>02</span>
+
+                    <h4>
+                        Data-Driven Analysis
+                    </h4>
+
+                    <p>
+                        Historical property data and machine
+                        learning are used to estimate an expected
+                        property price.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="problem-item">
+
+                    <span>03</span>
+
+                    <h4>
+                        Better Decisions
+                    </h4>
+
+                    <p>
+                        Users can compare the listing price with
+                        the estimated value and identify properties
+                        worth investigating further.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= ML SECTION ================= -->
+
+<section class="ml-section">
+
+    <div class="container">
+
+        <div class="row align-items-center g-5">
+
+            <div class="col-lg-6">
+
+                <div class="section-label">
+                    MACHINE LEARNING
+                </div>
+
+                <h2>
+                    From property data<br>
+                    to price intelligence.
+                </h2>
+
+                <p>
+                    The platform uses historical property listings
+                    and property characteristics to estimate expected
+                    prices using a Random Forest regression model.
+                </p>
+
+                <a
+                    href="/predict/"
+                    class="primary-button"
+                >
+                    Try Price Prediction →
+                </a>
+
+            </div>
+
+
+            <div class="col-lg-6">
+
+                <div class="pipeline-card">
+
+                    <div class="pipeline-step">
+
+                        <div class="pipeline-number">
+                            01
+                        </div>
+
+                        <div>
+                            <strong>Property Data</strong>
+
+                            <small>
+                                Location, area, bedrooms, bathrooms,
+                                floors, parking and other features
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div class="pipeline-step">
+
+                        <div class="pipeline-number">
+                            02
+                        </div>
+
+                        <div>
+                            <strong>Random Forest Model</strong>
+
+                            <small>
+                                Learns patterns from historical
+                                property prices
+                            </small>
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div class="pipeline-step">
+
+                        <div class="pipeline-number">
+                            03
+                        </div>
+
+                        <div>
+                            <strong>Estimated Price</strong>
+
+                            <small>
+                                Produces a model-based expected
+                                property value
+                            </small>
+
+                        </div>
+
+                    </div>
+
+
+                    <div class="pipeline-line"></div>
+
+
+                    <div class="pipeline-step">
+
+                        <div class="pipeline-number">
+                            04
+                        </div>
+
+                        <div>
+                            <strong>Value Analysis</strong>
+
+                            <small>
+                                Compares listing price with
+                                estimated value
+                            </small>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FEATURES ================= -->
+
+<section class="features-section">
+
+    <div class="container">
+
+        <div class="section-label">
+            EXPLORE THE PLATFORM
+        </div>
+
+        <h2>
+            Tools for better property decisions
+        </h2>
+
+        <p class="section-intro">
+            Search listings, estimate property prices and
+            identify potential value opportunities.
+        </p>
+
+
+        <div class="row g-4 mt-4">
+
+            <!-- Browse -->
+
+            <div class="col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-number">
+                        01
+                    </div>
+
+                    <h3>
+                        Browse Properties
+                    </h3>
+
+                    <p>
+                        Search and filter property listings by
+                        location, price, bedrooms, bathrooms and more.
+                    </p>
+
+                    <a href="/properties/">
+                        Explore Properties →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Prediction -->
+
+            <div class="col-lg-4">
+
+                <div class="feature-card featured">
+
+                    <div class="feature-number">
+                        02
+                    </div>
+
+                    <h3>
+                        Predict Property Price
+                    </h3>
+
+                    <p>
+                        Enter property characteristics and receive
+                        an instant machine-learning based price estimate.
+                    </p>
+
+                    <a href="/predict/">
+                        Try Prediction →
+                    </a>
+
+                </div>
+
+            </div>
+
+
+            <!-- Undervalued -->
+
+            <div class="col-lg-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-number">
+                        03
+                    </div>
+
+                    <h3>
+                        Find Value Opportunities
+                    </h3>
+
+                    <p>
+                        Discover listings whose asking prices are
+                        substantially below their model-estimated values.
+                    </p>
+
+                    <a href="/undervalued/">
+                        Explore Opportunities →
+                    </a>
+
+                </div>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= DISCLAIMER ================= -->
+
+<section class="disclaimer-section">
+
+    <div class="container">
+
+        <div class="disclaimer">
+
+            <strong>Important:</strong>
+
+            Model estimates are intended for decision support
+            and are not professional property valuations.
+            Users should independently verify property information
+            before making an investment decision.
+
+        </div>
+
+    </div>
+
+</section>
+
+
+<!-- ================= FOOTER ================= -->
+
+<footer class="footer">
+
+    <div class="container">
+
+        <div class="row g-4">
 
             <div class="col-md-6">
 
-                <input
-                    type="text"
-                    name="location"
-                    class="form-control form-control-lg"
-                    placeholder="Search by location..."
-                >
+                <h5>
+                    Nepal Real Estate
+                </h5>
+
+                <p>
+                    Data-driven property price and value analysis
+                    for the Nepal real estate market.
+                </p>
 
             </div>
 
-            <div class="col-md-auto mt-2 mt-md-0">
 
-                <button
-                    type="submit"
-                    class="btn btn-primary btn-lg"
-                >
-                    Search
-                </button>
+            <div class="col-md-6 footer-links">
+
+                <a href="/properties/">
+                    Properties
+                </a>
+
+                <a href="/predict/">
+                    Price Prediction
+                </a>
+
+                <a href="/undervalued/">
+                    Value Opportunities
+                </a>
 
             </div>
 
-        </form>
+        </div>
+
+
+        <div class="footer-bottom">
+
+            © 2026 Nepal Real Estate
+
+        </div>
 
     </div>
 
-</section>
+</footer>
 
 
-<!-- Welcome Section -->
-<section class="py-5">
-
-    <div class="container text-center">
-
-        <h2 class="fw-bold">
-            Explore Properties
-        </h2>
-
-        <p class="text-muted">
-            Find properties that match your needs, budget and location.
-        </p>
-
-        <a
-            href="/properties/"
-            class="btn btn-outline-primary mt-3"
-        >
-            Browse Properties
-        </a>
-
-    </div>
-
-</section>
-
-
-<!-- Bootstrap JavaScript -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-```
 
 </body>
 </html>

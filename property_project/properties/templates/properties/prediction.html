@@ -12,23 +12,288 @@
         content="width=device-width, initial-scale=1.0"
     >
 
-    <title>Price Prediction - Nepal Real Estate</title>
+    <title>Price Prediction | Nepal Real Estate</title>
 
-
-    <!-- Bootstrap 5 -->
-
+    <!-- Bootstrap -->
     <link
         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
         rel="stylesheet"
     >
 
-
-    <!-- Your CSS -->
-
+    <!-- Main CSS -->
     <link
         rel="stylesheet"
         href="{% static 'properties/style.css' %}"
     >
+
+    <style>
+
+        body {
+            background: #f6f8fb;
+        }
+
+        /* Navigation */
+
+        .prediction-navbar {
+            background: #111827;
+        }
+
+        .prediction-navbar .navbar-brand {
+            font-size: 20px;
+        }
+
+        /* Page */
+
+        .prediction-page {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 55px 20px 70px;
+        }
+
+        /* Header */
+
+        .prediction-header {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+
+        .prediction-badge {
+            display: inline-block;
+            background: #e8f0ff;
+            color: #1a56db;
+            padding: 7px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .prediction-header h1 {
+            font-size: 38px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 12px;
+        }
+
+        .prediction-header p {
+            max-width: 650px;
+            margin: 0 auto;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        /* Main layout */
+
+        .prediction-layout {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+            align-items: start;
+        }
+
+        /* Form card */
+
+        .prediction-card {
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .card-heading {
+            font-size: 21px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 5px;
+        }
+
+        .card-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 30px;
+        }
+
+        /* Form sections */
+
+        .form-section {
+            margin-bottom: 30px;
+        }
+
+        .form-section-title {
+            font-size: 15px;
+            font-weight: 700;
+            color: #374151;
+            margin-bottom: 18px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #eef1f5;
+        }
+
+        .form-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+            margin-bottom: 7px;
+        }
+
+        .form-control,
+        .form-select {
+            min-height: 45px;
+            border: 1px solid #d9dee7;
+            border-radius: 9px;
+            font-size: 14px;
+        }
+
+        .form-control:focus,
+        .form-select:focus {
+            border-color: #1a56db;
+            box-shadow: 0 0 0 3px rgba(26, 86, 219, 0.1);
+        }
+
+        /* Predict button */
+
+        .predict-button {
+            width: 100%;
+            min-height: 50px;
+            border: none;
+            border-radius: 10px;
+            background: #1a56db;
+            color: white;
+            font-size: 15px;
+            font-weight: 600;
+            transition: 0.2s;
+        }
+
+        .predict-button:hover {
+            background: #1244b5;
+            transform: translateY(-1px);
+        }
+
+        /* Information panel */
+
+        .model-card {
+            background: #111827;
+            color: white;
+            border-radius: 18px;
+            padding: 30px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .model-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            font-size: 25px;
+            margin-bottom: 20px;
+        }
+
+        .model-card h3 {
+            font-size: 21px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .model-card p {
+            color: #cbd5e1;
+            font-size: 14px;
+            line-height: 1.7;
+        }
+
+        .model-point {
+            display: flex;
+            gap: 12px;
+            margin-top: 20px;
+        }
+
+        .model-point-icon {
+            color: #60a5fa;
+            font-weight: bold;
+        }
+
+        .model-point-text {
+            color: #d1d5db;
+            font-size: 14px;
+        }
+
+        /* Result */
+
+        .result-card {
+            margin-top: 25px;
+            background: white;
+            border-radius: 18px;
+            padding: 35px;
+            text-align: center;
+            border: 1px solid #dbe5ff;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .result-label {
+            color: #6b7280;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .result-price {
+            color: #1a56db;
+            font-size: 38px;
+            font-weight: 700;
+            margin: 12px 0;
+        }
+
+        .result-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin: 0;
+        }
+
+        .result-model {
+            display: inline-block;
+            margin-top: 18px;
+            padding: 7px 14px;
+            border-radius: 20px;
+            background: #f0f4ff;
+            color: #1a56db;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        /* Disclaimer */
+
+        .disclaimer {
+            margin-top: 25px;
+            padding: 15px 18px;
+            background: #fff;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 900px) {
+
+            .prediction-layout {
+                grid-template-columns: 1fr;
+            }
+
+            .prediction-header h1 {
+                font-size: 31px;
+            }
+
+            .prediction-card,
+            .model-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
 
 </head>
 
@@ -36,11 +301,9 @@
 <body>
 
 
-<!-- ============================= -->
 <!-- Navigation -->
-<!-- ============================= -->
 
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
+<nav class="navbar navbar-expand-lg navbar-dark prediction-navbar">
 
     <div class="container">
 
@@ -48,42 +311,57 @@
             class="navbar-brand fw-bold"
             href="/"
         >
-            Nepal Real Estate
+            🏠 Nepal Real Estate
         </a>
 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+        >
 
-        <div class="navbar-nav ms-auto">
+            <span class="navbar-toggler-icon"></span>
 
-            <a
-                class="nav-link"
-                href="/"
-            >
-                Home
-            </a>
-
-
-            <a
-                class="nav-link"
-                href="/properties/"
-            >
-                Properties
-            </a>
+        </button>
 
 
-            <a
-                class="nav-link active"
-                href="/predict/"
-            >
-                Price Prediction
-            </a>
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
 
+            <div class="navbar-nav ms-auto">
 
-            <a
-                class="nav-link"
-                href="/undervalued/"
-            >
-                Undervalued
-            </a>
+                <a
+                    class="nav-link"
+                    href="/"
+                >
+                    Home
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="/properties/"
+                >
+                    Properties
+                </a>
+
+                <a
+                    class="nav-link active"
+                    href="/predict/"
+                >
+                    Price Prediction
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="/undervalued/"
+                >
+                    Undervalued
+                </a>
+
+            </div>
 
         </div>
 
@@ -92,529 +370,473 @@
 </nav>
 
 
+<!-- Main -->
 
-<!-- ============================= -->
-<!-- Header -->
-<!-- ============================= -->
+<main class="prediction-page">
 
-<section class="bg-light py-5">
 
-    <div class="container text-center">
+    <!-- Header -->
 
-        <h1 class="fw-bold">
-            Property Price Prediction
+    <div class="prediction-header">
+
+        <span class="prediction-badge">
+            🤖 MACHINE LEARNING
+        </span>
+
+        <h1>
+            Estimate Your Property's Value
         </h1>
 
-        <p class="text-muted">
-
-            Enter property details to estimate
-            its market price using our
-            machine-learning model.
-
+        <p>
+            Enter the characteristics of a property and our
+            Random Forest model will estimate its expected
+            market price based on historical real-estate data.
         </p>
 
     </div>
 
-</section>
 
+    <!-- Main Layout -->
 
+    <div class="prediction-layout">
 
-<!-- ============================= -->
-<!-- Prediction Form -->
-<!-- ============================= -->
 
-<section class="py-5">
+        <!-- Prediction Form -->
 
-    <div class="container">
+        <div class="prediction-card">
 
-        <div class="row justify-content-center">
+            <div class="card-heading">
+                Property Details
+            </div>
 
-            <div class="col-lg-8">
+            <div class="card-description">
+                Provide the property information used by the ML model.
+            </div>
 
 
-                <div class="card shadow-sm">
+            <form method="POST">
 
-                    <div class="card-body p-4">
+                {% csrf_token %}
 
 
-                        <h3 class="fw-bold mb-4">
+                <!-- Location -->
 
-                            Enter Property Details
+                <div class="form-section">
 
-                        </h3>
+                    <div class="form-section-title">
+                        📍 Location
+                    </div>
 
+                    <div class="row g-3">
 
-                        <form method="POST">
+                        <div class="col-md-6">
 
-                            {% csrf_token %}
+                            <label class="form-label">
+                                City
+                            </label>
 
-
-                            <!-- ============================= -->
-                            <!-- City -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    City
-                                </label>
-
-
-                                <input
-                                    type="text"
-                                    name="city"
-                                    class="form-control"
-                                    placeholder="e.g. Kathmandu"
-                                    required
-                                >
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Neighborhood -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Neighborhood
-                                </label>
-
-
-                                <select
-                                    name="neighborhood"
-                                    class="form-select"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Select neighborhood
-                                    </option>
-
-
-                                    {% for neighborhood in neighborhoods %}
-
-                                    <option
-                                        value="{{ neighborhood }}"
-                                    >
-                                        {{ neighborhood }}
-                                    </option>
-
-                                    {% endfor %}
-
-                                </select>
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Area -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Area (sq.ft)
-                                </label>
-
-
-                                <input
-                                    type="number"
-                                    name="area"
-                                    class="form-control"
-                                    placeholder="e.g. 1500"
-                                    step="0.01"
-                                    required
-                                >
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Bedrooms + Bathrooms -->
-                            <!-- ============================= -->
-
-                            <div class="row">
-
-
-                                <div class="col-md-6 mb-3">
-
-                                    <label
-                                        class="form-label fw-semibold"
-                                    >
-                                        Bedrooms
-                                    </label>
-
-
-                                    <input
-                                        type="number"
-                                        name="bedroom"
-                                        class="form-control"
-                                        min="0"
-                                        required
-                                    >
-
-                                </div>
-
-
-
-                                <div class="col-md-6 mb-3">
-
-                                    <label
-                                        class="form-label fw-semibold"
-                                    >
-                                        Bathrooms
-                                    </label>
-
-
-                                    <input
-                                        type="number"
-                                        name="bathroom"
-                                        class="form-control"
-                                        min="0"
-                                        required
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Floors + Parking -->
-                            <!-- ============================= -->
-
-                            <div class="row">
-
-
-                                <div class="col-md-6 mb-3">
-
-                                    <label
-                                        class="form-label fw-semibold"
-                                    >
-                                        Floors
-                                    </label>
-
-
-                                    <input
-                                        type="number"
-                                        name="floors"
-                                        class="form-control"
-                                        min="1"
-                                        required
-                                    >
-
-                                </div>
-
-
-
-                                <div class="col-md-6 mb-3">
-
-                                    <label
-                                        class="form-label fw-semibold"
-                                    >
-                                        Parking Spaces
-                                    </label>
-
-
-                                    <input
-                                        type="number"
-                                        name="parking"
-                                        class="form-control"
-                                        min="0"
-                                        required
-                                    >
-
-                                </div>
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Road Width -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Road Width (ft)
-                                </label>
-
-
-                                <input
-                                    type="number"
-                                    name="road_width"
-                                    class="form-control"
-                                    step="0.1"
-                                    placeholder="e.g. 20"
-                                    required
-                                >
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Property Age -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Property Age
-                                </label>
-
-
-                                <input
-                                    type="number"
-                                    name="property_age"
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="e.g. 5"
-                                    required
-                                >
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Facing -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Facing
-                                </label>
-
-
-                                <select
-                                    name="face"
-                                    class="form-select"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Select facing
-                                    </option>
-
-
-                                    <option value="East">
-                                        East
-                                    </option>
-
-
-                                    <option value="West">
-                                        West
-                                    </option>
-
-
-                                    <option value="North">
-                                        North
-                                    </option>
-
-
-                                    <option value="South">
-                                        South
-                                    </option>
-
-
-                                    <option value="North East">
-                                        North East
-                                    </option>
-
-
-                                    <option value="North West">
-                                        North West
-                                    </option>
-
-
-                                    <option value="South East">
-                                        South East
-                                    </option>
-
-
-                                    <option value="South West">
-                                        South West
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Road Type -->
-                            <!-- ============================= -->
-
-                            <div class="mb-3">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Road Type
-                                </label>
-
-
-                                <select
-                                    name="road_type"
-                                    class="form-select"
-                                    required
-                                >
-
-                                    <option value="">
-                                        Select road type
-                                    </option>
-
-
-                                    <option value="Blacktopped">
-                                        Blacktopped
-                                    </option>
-
-
-                                    <option value="Gravelled">
-                                        Gravelled
-                                    </option>
-
-
-                                    <option value="Graveled">
-                                        Graveled
-                                    </option>
-
-
-                                    <option value="Paved">
-                                        Paved
-                                    </option>
-
-
-                                    <option value="Soil Stabilized">
-                                        Soil Stabilized
-                                    </option>
-
-
-                                    <option value="Alley">
-                                        Alley
-                                    </option>
-
-                                </select>
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Amenities -->
-                            <!-- ============================= -->
-
-                            <div class="mb-4">
-
-                                <label
-                                    class="form-label fw-semibold"
-                                >
-                                    Number of Amenities
-                                </label>
-
-
-                                <input
-                                    type="number"
-                                    name="amenity_count"
-                                    class="form-control"
-                                    min="0"
-                                    placeholder="e.g. 5"
-                                    required
-                                >
-
-                            </div>
-
-
-
-                            <!-- ============================= -->
-                            <!-- Submit -->
-                            <!-- ============================= -->
-
-                            <button
-                                type="submit"
-                                class="btn btn-primary w-100 py-2"
+                            <input
+                                type="text"
+                                name="city"
+                                class="form-control"
+                                placeholder="e.g. Kathmandu"
+                                required
                             >
 
-                                Predict Property Price
-
-                            </button>
+                        </div>
 
 
-                        </form>
+                        <div class="col-md-6">
 
+                            <label class="form-label">
+                                Neighborhood
+                            </label>
+
+                            <select
+                                name="neighborhood"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select neighborhood
+                                </option>
+
+                                {% for neighborhood in neighborhoods %}
+
+                                <option value="{{ neighborhood }}">
+                                    {{ neighborhood }}
+                                </option>
+
+                                {% endfor %}
+
+                            </select>
+
+                        </div>
 
                     </div>
 
                 </div>
 
 
+                <!-- Basic Property -->
 
-                <!-- ============================= -->
-                <!-- Prediction Result -->
-                <!-- ============================= -->
+                <div class="form-section">
 
-                {% if prediction %}
+                    <div class="form-section-title">
+                        🏠 Property Characteristics
+                    </div>
 
-                <div
-                    class="card shadow-sm mt-4 border-0"
+                    <div class="row g-3">
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Area (sq.ft)
+                            </label>
+
+                            <input
+                                type="number"
+                                name="area"
+                                class="form-control"
+                                placeholder="e.g. 1500"
+                                step="0.01"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-3">
+
+                            <label class="form-label">
+                                Bedrooms
+                            </label>
+
+                            <input
+                                type="number"
+                                name="bedroom"
+                                class="form-control"
+                                min="0"
+                                placeholder="3"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-3">
+
+                            <label class="form-label">
+                                Bathrooms
+                            </label>
+
+                            <input
+                                type="number"
+                                name="bathroom"
+                                class="form-control"
+                                min="0"
+                                placeholder="2"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Floors
+                            </label>
+
+                            <input
+                                type="number"
+                                name="floors"
+                                class="form-control"
+                                min="1"
+                                placeholder="2"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Parking Spaces
+                            </label>
+
+                            <input
+                                type="number"
+                                name="parking"
+                                class="form-control"
+                                min="0"
+                                placeholder="1"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Property Features -->
+
+                <div class="form-section">
+
+                    <div class="form-section-title">
+                        🛣️ Property Features
+                    </div>
+
+                    <div class="row g-3">
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Road Width (ft)
+                            </label>
+
+                            <input
+                                type="number"
+                                name="road_width"
+                                class="form-control"
+                                step="0.1"
+                                placeholder="e.g. 20"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Property Age
+                            </label>
+
+                            <input
+                                type="number"
+                                name="property_age"
+                                class="form-control"
+                                min="0"
+                                placeholder="e.g. 5"
+                                required
+                            >
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Facing
+                            </label>
+
+                            <select
+                                name="face"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select facing
+                                </option>
+
+                                <option value="East">
+                                    East
+                                </option>
+
+                                <option value="West">
+                                    West
+                                </option>
+
+                                <option value="North">
+                                    North
+                                </option>
+
+                                <option value="South">
+                                    South
+                                </option>
+
+                                <option value="North East">
+                                    North East
+                                </option>
+
+                                <option value="North West">
+                                    North West
+                                </option>
+
+                                <option value="South East">
+                                    South East
+                                </option>
+
+                                <option value="South West">
+                                    South West
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="col-md-6">
+
+                            <label class="form-label">
+                                Road Type
+                            </label>
+
+                            <select
+                                name="road_type"
+                                class="form-select"
+                                required
+                            >
+
+                                <option value="">
+                                    Select road type
+                                </option>
+
+                                <option value="Blacktopped">
+                                    Blacktopped
+                                </option>
+
+                                <option value="Gravelled">
+                                    Gravelled
+                                </option>
+
+                                <option value="Graveled">
+                                    Graveled
+                                </option>
+
+                                <option value="Paved">
+                                    Paved
+                                </option>
+
+                                <option value="Soil Stabilized">
+                                    Soil Stabilized
+                                </option>
+
+                                <option value="Alley">
+                                    Alley
+                                </option>
+
+                            </select>
+
+                        </div>
+
+
+                        <div class="col-12">
+
+                            <label class="form-label">
+                                Number of Amenities
+                            </label>
+
+                            <input
+                                type="number"
+                                name="amenity_count"
+                                class="form-control"
+                                min="0"
+                                placeholder="e.g. 5"
+                                required
+                            >
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- Submit -->
+
+                <button
+                    type="submit"
+                    class="predict-button"
                 >
+                    🤖 Generate ML Price Estimate
+                </button>
 
-                    <div
-                        class="card-body text-center p-4"
-                    >
+            </form>
 
-                        <h5 class="text-muted">
-
-                            Estimated Property Price
-
-                        </h5>
+        </div>
 
 
-                        <h1
-                            class="fw-bold text-primary mt-3"
-                        >
+        <!-- Model Information -->
 
-                            Rs. {{ prediction }}
+        <div>
 
-                        </h1>
+            <div class="model-card">
+
+                <div class="model-icon">
+                    🤖
+                </div>
+
+                <h3>
+                    How the ML Model Works
+                </h3>
+
+                <p>
+                    Your property details are passed to a trained
+                    Random Forest regression model that learned
+                    relationships between property characteristics
+                    and prices from historical Nepal real-estate data.
+                </p>
 
 
-                        <p class="text-muted mb-0">
+                <div class="model-point">
 
-                            This estimate is generated
-                            using the trained Random
-                            Forest model.
+                    <div class="model-point-icon">
+                        ✓
+                    </div>
 
-                        </p>
-
+                    <div class="model-point-text">
+                        Uses property characteristics such as area,
+                        bedrooms, road width and property age.
                     </div>
 
                 </div>
 
-                {% endif %}
 
+                <div class="model-point">
+
+                    <div class="model-point-icon">
+                        ✓
+                    </div>
+
+                    <div class="model-point-text">
+                        Uses location and neighborhood information
+                        to improve the estimate.
+                    </div>
+
+                </div>
+
+
+                <div class="model-point">
+
+                    <div class="model-point-icon">
+                        ✓
+                    </div>
+
+                    <div class="model-point-text">
+                        Produces an estimated property price rather
+                        than simply showing the asking price.
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <div class="disclaimer">
+
+                <strong>Important:</strong>
+                This prediction is generated by a machine-learning
+                model and should be treated as an estimate.
+                It is not a professional property valuation.
 
             </div>
 
@@ -622,17 +844,43 @@
 
     </div>
 
-</section>
+
+    <!-- Prediction Result -->
+
+    {% if prediction %}
+
+    <div class="result-card">
+
+        <div class="result-label">
+            ESTIMATED PROPERTY VALUE
+        </div>
+
+        <div class="result-price">
+            Rs. {{ prediction }}
+        </div>
+
+        <p class="result-description">
+            Estimated using your property's characteristics
+            and the trained Random Forest model.
+        </p>
+
+        <span class="result-model">
+            🤖 Random Forest Regression
+        </span>
+
+    </div>
+
+    {% endif %}
 
 
+</main>
 
-<!-- ============================= -->
-<!-- Bootstrap JavaScript -->
-<!-- ============================= -->
+
+<!-- Bootstrap -->
 
 <script
-    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
-></script>
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
 
 
 </body>

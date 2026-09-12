@@ -79,6 +79,10 @@ class Command(BaseCommand):
 
                     value_gap_pct=float(row["Value_Gap_Pct"])
                     if row.get("Value_Gap_Pct") else None,
+
+
+                   
+
                 )
 
                 count += 1

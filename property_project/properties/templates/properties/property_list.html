@@ -4,11 +4,10 @@
 <html lang="en">
 
 <head>
-
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Properties - Nepal Real Estate</title>
+    <title>Properties | Nepal Real Estate</title>
 
     <!-- Bootstrap 5 -->
     <link
@@ -16,24 +15,24 @@
         rel="stylesheet"
     >
 
-    <!-- Your CSS -->
+    <!-- Custom CSS -->
     <link
         rel="stylesheet"
         href="{% static 'properties/style.css' %}"
     >
-
 </head>
 
 <body>
 
+<!-- ========================= -->
 <!-- Navigation -->
+<!-- ========================= -->
 
-<nav class="navbar navbar-expand-lg bg-dark navbar-dark">
-
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-sm">
     <div class="container">
 
         <a class="navbar-brand fw-bold" href="/">
-            Nepal Real Estate
+            🏠 Nepal Real Estate
         </a>
 
         <div class="navbar-nav ms-auto">
@@ -57,312 +56,411 @@
         </div>
 
     </div>
-
 </nav>
 
 
+<!-- ========================= -->
 <!-- Page Header -->
+<!-- ========================= -->
 
-<section class="bg-light py-5">
+<section class="properties-hero">
 
-    <div class="container text-center">
+    <div class="container">
 
-        <h1 class="fw-bold">
-            Find Your Property
-        </h1>
+        <div class="row align-items-center">
 
-        <p class="text-muted">
-            Explore properties available across Nepal.
-        </p>
+            <div class="col-lg-8">
+
+                <span class="properties-label">
+                    PROPERTY MARKETPLACE
+                </span>
+
+                <h1>
+                    Find a Property That Fits Your Needs
+                </h1>
+
+                <p>
+                    Explore houses, apartments and land across Nepal.
+                    Search by location, price and property features.
+                </p>
+
+            </div>
+
+            <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+
+                <div class="property-count-box">
+
+                    <strong>
+                        {{ properties.paginator.count }}
+                    </strong>
+
+                    <span>
+                        Properties Found
+                    </span>
+
+                </div>
+
+            </div>
+
+        </div>
 
     </div>
 
 </section>
 
 
-<!-- Search and Filters -->
-
-<div class="container mt-4">
-
-    <form
-        action="/properties/"
-        method="GET"
-        class="card shadow-sm p-4"
-    >
-
-        <h5 class="fw-bold mb-3">
-            Search & Filter Properties
-        </h5>
-
-        <div class="row g-3">
-
-
-            <!-- Location -->
-
-            <div class="col-md-6">
-
-                <label class="form-label">
-                    Location
-                </label>
-
-                <input
-                    type="text"
-                    name="location"
-                    value="{{ request.GET.location }}"
-                    class="form-control"
-                    placeholder="Search by city or address..."
-                >
-
-            </div>
-
-
-            <!-- Minimum Price -->
-
-            <div class="col-md-3">
-
-                <label class="form-label">
-                    Minimum Price
-                </label>
-
-                <input
-                    type="number"
-                    name="min_price"
-                    value="{{ request.GET.min_price }}"
-                    class="form-control"
-                    placeholder="e.g. 5000000"
-                >
-
-            </div>
-
-
-            <!-- Maximum Price -->
-
-            <div class="col-md-3">
-
-                <label class="form-label">
-                    Maximum Price
-                </label>
-
-                <input
-                    type="number"
-                    name="max_price"
-                    value="{{ request.GET.max_price }}"
-                    class="form-control"
-                    placeholder="e.g. 30000000"
-                >
-
-            </div>
-
-
-            <!-- Bedrooms -->
-
-            <div class="col-md-3">
-
-                <label class="form-label">
-                    Minimum Bedrooms
-                </label>
-
-                <select
-                    name="bedrooms"
-                    class="form-select"
-                >
-
-                    <option value="">
-                        Any
-                    </option>
-
-                    <option value="1"
-                        {% if request.GET.bedrooms == "1" %}selected{% endif %}>
-                        1+
-                    </option>
-
-                    <option value="2"
-                        {% if request.GET.bedrooms == "2" %}selected{% endif %}>
-                        2+
-                    </option>
-
-                    <option value="3"
-                        {% if request.GET.bedrooms == "3" %}selected{% endif %}>
-                        3+
-                    </option>
-
-                    <option value="4"
-                        {% if request.GET.bedrooms == "4" %}selected{% endif %}>
-                        4+
-                    </option>
-
-                    <option value="5"
-                        {% if request.GET.bedrooms == "5" %}selected{% endif %}>
-                        5+
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- Bathrooms -->
-
-            <div class="col-md-3">
-
-                <label class="form-label">
-                    Minimum Bathrooms
-                </label>
-
-                <select
-                    name="bathrooms"
-                    class="form-select"
-                >
-
-                    <option value="">
-                        Any
-                    </option>
-
-                    <option value="1"
-                        {% if request.GET.bathrooms == "1" %}selected{% endif %}>
-                        1+
-                    </option>
-
-                    <option value="2"
-                        {% if request.GET.bathrooms == "2" %}selected{% endif %}>
-                        2+
-                    </option>
-
-                    <option value="3"
-                        {% if request.GET.bathrooms == "3" %}selected{% endif %}>
-                        3+
-                    </option>
-
-                    <option value="4"
-                        {% if request.GET.bathrooms == "4" %}selected{% endif %}>
-                        4+
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- Sorting -->
-
-            <div class="col-md-3">
-
-                <label class="form-label">
-                    Sort By
-                </label>
-
-                <select
-                    name="sort"
-                    class="form-select"
-                >
-
-                    <option value=""
-                        {% if not request.GET.sort %}selected{% endif %}>
-                        Newest First
-                    </option>
-
-                    <option value="price_low"
-                        {% if request.GET.sort == "price_low" %}selected{% endif %}>
-                        Price: Low to High
-                    </option>
-
-                    <option value="price_high"
-                        {% if request.GET.sort == "price_high" %}selected{% endif %}>
-                        Price: High to Low
-                    </option>
-
-                </select>
-
-            </div>
-
-
-            <!-- Buttons -->
-
-            <div class="col-md-3 d-flex align-items-end gap-2">
-
-                <button
-                    type="submit"
-                    class="btn btn-primary"
-                >
-                    Search & Filter
-                </button>
-
-                <a
-                    href="/properties/"
-                    class="btn btn-outline-secondary"
-                >
-                    Clear
-                </a>
-
-            </div>
-
-        </div>
-
-    </form>
-
-</div>
-
-
-<!-- Property Cards -->
-
-<section class="py-5">
+<!-- ========================= -->
+<!-- Search & Filters -->
+<!-- ========================= -->
+
+<section class="filter-section">
 
     <div class="container">
 
+        <form
+            action="/properties/"
+            method="GET"
+            class="filter-card"
+        >
 
-        <!-- Result Count -->
+            <div class="filter-header">
 
-        <div class="mb-4">
+                <div>
+                    <h5>
+                        🔎 Search & Filter
+                    </h5>
 
-            <h5 class="text-muted">
-                {{ properties.paginator.count }} properties found
-            </h5>
+                    <p>
+                        Narrow down properties based on your requirements.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="row g-3">
+
+                <!-- Location -->
+
+                <div class="col-lg-4 col-md-6">
+
+                    <label class="form-label">
+                        Location
+                    </label>
+
+                    <input
+                        type="text"
+                        name="location"
+                        value="{{ request.GET.location }}"
+                        class="form-control"
+                        placeholder="City, area or address"
+                    >
+
+                </div>
+
+
+                <!-- Minimum Price -->
+
+                <div class="col-lg-2 col-md-6">
+
+                    <label class="form-label">
+                        Min Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="min_price"
+                        value="{{ request.GET.min_price }}"
+                        class="form-control"
+                        placeholder="Rs. 5,000,000"
+                    >
+
+                </div>
+
+
+                <!-- Maximum Price -->
+
+                <div class="col-lg-2 col-md-6">
+
+                    <label class="form-label">
+                        Max Price
+                    </label>
+
+                    <input
+                        type="number"
+                        name="max_price"
+                        value="{{ request.GET.max_price }}"
+                        class="form-control"
+                        placeholder="Rs. 30,000,000"
+                    >
+
+                </div>
+
+
+                <!-- Bedrooms -->
+
+                <div class="col-lg-2 col-md-6">
+
+                    <label class="form-label">
+                        Bedrooms
+                    </label>
+
+                    <select
+                        name="bedrooms"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            Any
+                        </option>
+
+                        <option value="1"
+                            {% if request.GET.bedrooms == "1" %}selected{% endif %}>
+                            1+ Bedroom
+                        </option>
+
+                        <option value="2"
+                            {% if request.GET.bedrooms == "2" %}selected{% endif %}>
+                            2+ Bedrooms
+                        </option>
+
+                        <option value="3"
+                            {% if request.GET.bedrooms == "3" %}selected{% endif %}>
+                            3+ Bedrooms
+                        </option>
+
+                        <option value="4"
+                            {% if request.GET.bedrooms == "4" %}selected{% endif %}>
+                            4+ Bedrooms
+                        </option>
+
+                        <option value="5"
+                            {% if request.GET.bedrooms == "5" %}selected{% endif %}>
+                            5+ Bedrooms
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Bathrooms -->
+
+                <div class="col-lg-2 col-md-6">
+
+                    <label class="form-label">
+                        Bathrooms
+                    </label>
+
+                    <select
+                        name="bathrooms"
+                        class="form-select"
+                    >
+
+                        <option value="">
+                            Any
+                        </option>
+
+                        <option value="1"
+                            {% if request.GET.bathrooms == "1" %}selected{% endif %}>
+                            1+ Bathroom
+                        </option>
+
+                        <option value="2"
+                            {% if request.GET.bathrooms == "2" %}selected{% endif %}>
+                            2+ Bathrooms
+                        </option>
+
+                        <option value="3"
+                            {% if request.GET.bathrooms == "3" %}selected{% endif %}>
+                            3+ Bathrooms
+                        </option>
+
+                        <option value="4"
+                            {% if request.GET.bathrooms == "4" %}selected{% endif %}>
+                            4+ Bathrooms
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Sort -->
+
+                <div class="col-lg-3 col-md-6">
+
+                    <label class="form-label">
+                        Sort Properties
+                    </label>
+
+                    <select
+                        name="sort"
+                        class="form-select"
+                    >
+
+                        <option value=""
+                            {% if not request.GET.sort %}selected{% endif %}>
+                            Newest First
+                        </option>
+
+                        <option value="price_low"
+                            {% if request.GET.sort == "price_low" %}selected{% endif %}>
+                            Price: Low to High
+                        </option>
+
+                        <option value="price_high"
+                            {% if request.GET.sort == "price_high" %}selected{% endif %}>
+                            Price: High to Low
+                        </option>
+
+                    </select>
+
+                </div>
+
+
+                <!-- Buttons -->
+
+                <div class="col-lg-5 col-md-6 d-flex align-items-end gap-2">
+
+                    <button
+                        type="submit"
+                        class="btn btn-primary search-button"
+                    >
+                        Search Properties
+                    </button>
+
+                    <a
+                        href="/properties/"
+                        class="btn btn-light clear-button"
+                    >
+                        Clear
+                    </a>
+
+                </div>
+
+            </div>
+
+        </form>
+
+    </div>
+
+</section>
+
+
+<!-- ========================= -->
+<!-- Property Results -->
+<!-- ========================= -->
+
+<section class="properties-results">
+
+    <div class="container">
+
+        <!-- Result Header -->
+
+        <div class="results-header">
+
+            <div>
+
+                <span class="results-label">
+                    AVAILABLE PROPERTIES
+                </span>
+
+                <h2>
+                    Property Listings
+                </h2>
+
+            </div>
+
+            <div class="results-info">
+                Showing page {{ properties.number }}
+                of {{ properties.paginator.num_pages }}
+            </div>
 
         </div>
 
 
-        <!-- Property Cards -->
+        <!-- Property Grid -->
 
         <div class="row g-4">
 
             {% for property in properties %}
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-xl-4">
 
-                <div class="card h-100 shadow-sm">
+                <div class="property-market-card h-100">
 
-                    <div class="card-body">
 
-                        <h5 class="card-title fw-bold">
+                    <!-- Property Visual -->
+
+                    <div class="property-visual">
+
+                        <div class="property-icon">
+                            🏠
+                        </div>
+
+                        <span class="property-badge">
+                            PROPERTY
+                        </span>
+
+                    </div>
+
+
+                    <!-- Property Content -->
+
+                    <div class="property-content">
+
+                        <!-- Title -->
+
+                        <h3 class="property-title">
                             {{ property.title }}
-                        </h5>
+                        </h3>
 
-                        <p class="text-muted mb-2">
+
+                        <!-- Location -->
+
+                        <p class="property-location">
                             📍 {{ property.address }}, {{ property.city }}
                         </p>
 
-                        <h4 class="text-primary fw-bold">
-                            Rs. {{ property.price|floatformat:0 }}
-                        </h4>
 
-                        <hr>
+                        <!-- Price -->
 
-                        <div class="row text-center">
+                        <div class="property-price">
+
+                            <span>
+                                Asking Price
+                            </span>
+
+                            <strong>
+                                Rs. {{ property.price|floatformat:0 }}
+                            </strong>
+
+                        </div>
+
+
+                        <!-- Features -->
+
+                        <div class="property-feature-grid">
 
 
                             {% if property.area %}
 
-                            <div class="col">
+                            <div class="property-feature">
 
-                                <small class="text-muted">
-                                    Area
-                                </small>
+                                <span class="feature-icon">
+                                    📐
+                                </span>
 
-                                <br>
+                                <div>
+                                    <small>
+                                        Area
+                                    </small>
 
-                                <strong>
-                                    {{ property.area|floatformat:0 }} sq.ft
-                                </strong>
+                                    <strong>
+                                        {{ property.area|floatformat:0 }} sq.ft
+                                    </strong>
+                                </div>
 
                             </div>
 
@@ -371,17 +469,21 @@
 
                             {% if property.bedroom %}
 
-                            <div class="col">
+                            <div class="property-feature">
 
-                                <small class="text-muted">
-                                    Bedrooms
-                                </small>
+                                <span class="feature-icon">
+                                    🛏️
+                                </span>
 
-                                <br>
+                                <div>
+                                    <small>
+                                        Bedrooms
+                                    </small>
 
-                                <strong>
-                                    {{ property.bedroom }}
-                                </strong>
+                                    <strong>
+                                        {{ property.bedroom }}
+                                    </strong>
+                                </div>
 
                             </div>
 
@@ -390,17 +492,44 @@
 
                             {% if property.bathroom %}
 
-                            <div class="col">
+                            <div class="property-feature">
 
-                                <small class="text-muted">
-                                    Bathrooms
-                                </small>
+                                <span class="feature-icon">
+                                    🚿
+                                </span>
 
-                                <br>
+                                <div>
+                                    <small>
+                                        Bathrooms
+                                    </small>
 
-                                <strong>
-                                    {{ property.bathroom }}
-                                </strong>
+                                    <strong>
+                                        {{ property.bathroom }}
+                                    </strong>
+                                </div>
+
+                            </div>
+
+                            {% endif %}
+
+
+                            {% if property.floors %}
+
+                            <div class="property-feature">
+
+                                <span class="feature-icon">
+                                    🏢
+                                </span>
+
+                                <div>
+                                    <small>
+                                        Floors
+                                    </small>
+
+                                    <strong>
+                                        {{ property.floors }}
+                                    </strong>
+                                </div>
 
                             </div>
 
@@ -409,11 +538,51 @@
                         </div>
 
 
+                        <!-- Price Analysis -->
+
+                        {% if property.predicted_price %}
+
+                        <div class="mini-analysis">
+
+                            <div>
+
+                                <small>
+                                    ML Estimated Price
+                                </small>
+
+                                <strong>
+                                    Rs. {{ property.predicted_price|floatformat:0 }}
+                                </strong>
+
+                            </div>
+
+                            {% if property.value_gap_pct %}
+
+                            <span
+                                class="{% if property.value_gap_pct < 0 %}value-positive{% else %}value-warning{% endif %}"
+                            >
+                                {% if property.value_gap_pct < 0 %}
+                                    Potential Value
+                                {% else %}
+                                    Price Difference
+                                {% endif %}
+                            </span>
+
+                            {% endif %}
+
+                        </div>
+
+                        {% endif %}
+
+
+                        <!-- Details Button -->
+
                         <a
                             href="{% url 'property_detail' property.id %}"
-                            class="btn btn-outline-primary w-100 mt-4"
+                            class="view-property-button"
                         >
-                            View Details
+                            View Property Details
+                            <span>→</span>
                         </a>
 
                     </div>
@@ -425,15 +594,33 @@
 
             {% empty %}
 
-            <div class="text-center">
+            <!-- No Results -->
 
-                <h4>
-                    No properties found.
-                </h4>
+            <div class="col-12">
 
-                <p class="text-muted">
-                    Try changing your search or filter options.
-                </p>
+                <div class="no-properties">
+
+                    <div class="no-properties-icon">
+                        🔍
+                    </div>
+
+                    <h3>
+                        No properties found
+                    </h3>
+
+                    <p>
+                        We couldn't find properties matching your search.
+                        Try changing your filters.
+                    </p>
+
+                    <a
+                        href="/properties/"
+                        class="btn btn-primary"
+                    >
+                        View All Properties
+                    </a>
+
+                </div>
 
             </div>
 
@@ -442,15 +629,17 @@
         </div>
 
 
+        <!-- ========================= -->
         <!-- Pagination -->
+        <!-- ========================= -->
 
         {% if properties.paginator.num_pages > 1 %}
 
-        <div class="d-flex justify-content-center mt-5">
+        <div class="pagination-section">
 
-            <nav>
+            <nav aria-label="Property pagination">
 
-                <ul class="pagination">
+                <ul class="pagination justify-content-center">
 
 
                     <!-- Previous -->
@@ -463,7 +652,7 @@
                             class="page-link"
                             href="?page={{ properties.previous_page_number }}&location={{ request.GET.location }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&bedrooms={{ request.GET.bedrooms }}&bathrooms={{ request.GET.bathrooms }}&sort={{ request.GET.sort }}"
                         >
-                            Previous
+                            ← Previous
                         </a>
 
                     </li>
@@ -493,7 +682,7 @@
                             class="page-link"
                             href="?page={{ properties.next_page_number }}&location={{ request.GET.location }}&min_price={{ request.GET.min_price }}&max_price={{ request.GET.max_price }}&bedrooms={{ request.GET.bedrooms }}&bathrooms={{ request.GET.bathrooms }}&sort={{ request.GET.sort }}"
                         >
-                            Next
+                            Next →
                         </a>
 
                     </li>
@@ -508,10 +697,61 @@
 
         {% endif %}
 
-
     </div>
 
 </section>
+
+
+<!-- ========================= -->
+<!-- Footer -->
+<!-- ========================= -->
+
+<footer class="site-footer">
+
+    <div class="container">
+
+        <div class="row">
+
+            <div class="col-md-6">
+
+                <h5>
+                    🏠 Nepal Real Estate
+                </h5>
+
+                <p>
+                    Data-driven property price and value analysis
+                    for the Nepal real estate market.
+                </p>
+
+            </div>
+
+            <div class="col-md-6 text-md-end">
+
+                <a href="/">
+                    Home
+                </a>
+
+                <a href="/predict/">
+                    Price Prediction
+                </a>
+
+                <a href="/undervalued/">
+                    Undervalued
+                </a>
+
+            </div>
+
+        </div>
+
+        <hr>
+
+        <p class="footer-bottom">
+            © 2026 Nepal Real Estate
+        </p>
+
+    </div>
+
+</footer>
 
 
 <!-- Bootstrap JavaScript -->
@@ -521,5 +761,4 @@
 </script>
 
 </body>
-
 </html>

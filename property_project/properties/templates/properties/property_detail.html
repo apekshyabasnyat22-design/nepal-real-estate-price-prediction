@@ -1,200 +1,574 @@
 {% load static %}
 
 <!DOCTYPE html>
-
-<html>
+<html lang="en">
 <head>
-    <title>{{ property.title }} - Nepal Real Estate</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet"
-      href="{% static 'properties/style.css' %}">
+    <title>{{ property.title }} | Nepal Real Estate</title>
 
-<!-- Leaflet CSS -->
-<link rel="stylesheet"
-      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+    <!-- Bootstrap 5 -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
 
-<style>
-    #map {
-        width: 100%;
-        height: 400px;
-        margin-top: 25px;
-        border-radius: 12px;
-    }
+    <!-- Leaflet CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
 
-    .price-analysis {
-        margin-top: 20px;
-        padding: 20px;
-        border-radius: 12px;
-        background-color: #f8f9fa;
-    }
+    <!-- Project CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
 
-    .price-analysis.undervalued {
-        background-color: #e6f4ea;
-    }
+    <style>
+        body {
+            background: #f5f7fb;
+            color: #111827;
+        }
 
-    .price-analysis.overvalued {
-        background-color: #fdecea;
-    }
-</style>
+        .navbar {
+            background: #111827;
+        }
 
+        .page-container {
+            max-width: 1200px;
+            margin: auto;
+            padding: 45px 20px 70px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 25px;
+            color: #2563eb;
+            text-decoration: none;
+            font-weight: 600;
+        }
+
+        .back-link:hover {
+            text-decoration: underline;
+        }
+
+        .property-header,
+        .info-card,
+        .map-card {
+            background: white;
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .property-badge {
+            display: inline-block;
+            background: #e8f0ff;
+            color: #1d4ed8;
+            padding: 7px 14px;
+            border-radius: 20px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .property-title {
+            font-size: 34px;
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .property-location {
+            color: #6b7280;
+            font-size: 16px;
+        }
+
+        .property-price {
+            color: #2563eb;
+            font-size: 34px;
+            font-weight: 700;
+            margin-top: 20px;
+        }
+
+        .price-per-square-foot {
+            color: #6b7280;
+            font-size: 14px;
+        }
+
+        .section-title {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 25px;
+        }
+
+        .stat-box {
+            height: 100%;
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 12px;
+            padding: 18px;
+        }
+
+        .stat-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .stat-value {
+            color: #111827;
+            font-size: 17px;
+            font-weight: 600;
+        }
+
+        .analysis-card {
+            border-radius: 18px;
+            padding: 32px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .analysis-card.undervalued {
+            background: #ecfdf5;
+            border: 1px solid #bbf7d0;
+        }
+
+        .analysis-card.overvalued {
+            background: #fff1f2;
+            border: 1px solid #fecdd3;
+        }
+
+        .analysis-title {
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .analysis-description {
+            color: #6b7280;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        .analysis-label {
+            color: #6b7280;
+            font-size: 13px;
+            margin-bottom: 7px;
+        }
+
+        .analysis-value {
+            color: #111827;
+            font-size: 24px;
+            font-weight: 700;
+        }
+
+        .status-badge {
+            display: inline-block;
+            margin-top: 22px;
+            padding: 9px 16px;
+            border-radius: 30px;
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .status-undervalued {
+            background: #d1fae5;
+            color: #047857;
+        }
+
+        .status-overvalued {
+            background: #ffe4e6;
+            color: #be123c;
+        }
+
+        #map {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+        }
+
+        .leaflet-popup-content {
+            font-size: 14px;
+            line-height: 1.6;
+        }
+
+        .footer-note {
+            color: #6b7280;
+            font-size: 13px;
+            margin-top: 20px;
+        }
+
+        @media (max-width: 768px) {
+            .page-container {
+                padding: 30px 15px 50px;
+            }
+
+            .property-header,
+            .info-card,
+            .analysis-card,
+            .map-card {
+                padding: 22px;
+            }
+
+            .property-title {
+                font-size: 27px;
+            }
+
+            .property-price {
+                font-size: 28px;
+            }
+
+            #map {
+                height: 350px;
+            }
+        }
+    </style>
 </head>
 
 <body>
 
-<nav>
-    <div class="logo">Nepal Real Estate</div>
+<!-- Navigation -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+    <div class="container">
 
-<div class="nav-links">
-    <a href="/">Home</a>
-    <a href="/properties/">Properties</a>
-    <a href="#">About</a>
-</div>
+        <a class="navbar-brand fw-bold" href="/">
+            🏠 Nepal Real Estate
+        </a>
 
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#mainNavbar"
+        >
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="mainNavbar">
+            <div class="navbar-nav ms-auto">
+
+                <a class="nav-link" href="/">
+                    Home
+                </a>
+
+                <a class="nav-link" href="/properties/">
+                    Properties
+                </a>
+
+                <a class="nav-link" href="/predict/">
+                    Price Prediction
+                </a>
+
+                <a class="nav-link" href="/undervalued/">
+                    Undervalued
+                </a>
+
+                <a class="nav-link" href="/about/">
+                    About
+                </a>
+
+            </div>
+        </div>
+    </div>
 </nav>
 
-<section class="property-detail">
 
-<h1>{{ property.title }}</h1>
+<!-- Main Content -->
+<main class="page-container">
 
-<div class="detail-card">
-
-    <h2>Rs. {{ property.price|floatformat:0 }}</h2>
-
-    <p>
-        <strong>Location:</strong>
-        {{ property.address }}, {{ property.city }}
-    </p>
-
-    {% if property.bedroom %}
-    <p>
-        <strong>Bedrooms:</strong>
-        {{ property.bedroom }}
-    </p>
-    {% endif %}
-
-    {% if property.bathroom %}
-    <p>
-        <strong>Bathrooms:</strong>
-        {{ property.bathroom }}
-    </p>
-    {% endif %}
-
-    {% if property.area %}
-    <p>
-        <strong>Area:</strong>
-        {{ property.area|floatformat:0 }} sq.ft
-    </p>
-    {% endif %}
-
-    {% if property.floors %}
-    <p>
-        <strong>Floors:</strong>
-        {{ property.floors }}
-    </p>
-    {% endif %}
-
-    {% if property.parking %}
-    <p>
-        <strong>Parking:</strong>
-        {{ property.parking }}
-    </p>
-    {% endif %}
-
-    {% if property.face %}
-    <p>
-        <strong>Facing:</strong>
-        {{ property.face }}
-    </p>
-    {% endif %}
-
-    {% if property.road_width %}
-    <p>
-        <strong>Road Width:</strong>
-        {{ property.road_width }} ft
-    </p>
-    {% endif %}
-
-    {% if price_per_sqft %}
-    <p>
-        <strong>Price per sq.ft:</strong>
-        Rs. {{ price_per_sqft|floatformat:0 }}
-    </p>
-    {% endif %}
-
-</div>
+    <a href="/properties/" class="back-link">
+        ← Back to Properties
+    </a>
 
 
-<!-- ML Price Analysis -->
+    <!-- Property Header -->
+    <section class="property-header">
 
-{% if property.predicted_price %}
+        <span class="property-badge">
+            PROPERTY LISTING
+        </span>
 
-<div class="price-analysis
-    {% if price_difference_pct < 0 %}undervalued{% else %}overvalued{% endif %}"
->
+        <h1 class="property-title">
+            {{ property.title }}
+        </h1>
 
-    <h3>Price Analysis (ML Estimate)</h3>
+        <div class="property-location">
+            📍 {{ property.address }}, {{ property.city }}
+        </div>
 
-    <p>
-        <strong>Estimated Price:</strong>
-        Rs. {{ property.predicted_price|floatformat:0 }}
-    </p>
+        <div class="property-price">
+            Rs. {{ property.price|floatformat:0 }}
+        </div>
 
-    <p>
-        <strong>Actual Price:</strong>
-        Rs. {{ property.price|floatformat:0 }}
-    </p>
+        {% if price_per_sqft %}
+            <div class="price-per-square-foot">
+                Rs. {{ price_per_sqft|floatformat:0 }} per sq.ft.
+            </div>
+        {% endif %}
 
-    <p>
-        <strong>Difference:</strong>
+    </section>
+
+
+    <!-- Property Information -->
+    <section class="info-card">
+
+        <h2 class="section-title">
+            Property Information
+        </h2>
+
+        <div class="row g-3">
+
+            {% if property.area %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Area
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.area|floatformat:0 }} sq.ft
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.bedroom %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Bedrooms
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.bedroom }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.bathroom %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Bathrooms
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.bathroom }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.floors %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Floors
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.floors }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.parking %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Parking
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.parking }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.face %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Facing
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.face }}
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+
+            {% if property.road_width %}
+                <div class="col-6 col-md-3">
+                    <div class="stat-box">
+                        <div class="stat-label">
+                            Road Width
+                        </div>
+
+                        <div class="stat-value">
+                            {{ property.road_width }} ft
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+
+        </div>
+
+    </section>
+
+
+    <!-- Machine Learning Analysis -->
+    {% if property.predicted_price %}
 
         {% if price_difference_pct < 0 %}
-            {{ price_difference_pct|floatformat:1 }}% below estimated price
-            (potentially undervalued)
+            <section class="analysis-card undervalued">
         {% else %}
-            {{ price_difference_pct|floatformat:1 }}% above estimated price
+            <section class="analysis-card overvalued">
         {% endif %}
-    </p>
 
-</div>
+            <div class="analysis-title">
+                🤖 Machine Learning Price Analysis
+            </div>
 
-{% endif %}
+            <div class="analysis-description">
+                Random Forest estimated value compared with the listed price.
+            </div>
+
+            <div class="row g-4">
+
+                <div class="col-md-4">
+                    <div class="analysis-label">
+                        LISTED PRICE
+                    </div>
+
+                    <div class="analysis-value">
+                        Rs. {{ property.price|floatformat:0 }}
+                    </div>
+                </div>
 
 
-<h2>Property Location</h2>
+                <div class="col-md-4">
+                    <div class="analysis-label">
+                        ML ESTIMATED PRICE
+                    </div>
 
-<div id="map"></div>
+                    <div class="analysis-value">
+                        Rs. {{ property.predicted_price|floatformat:0 }}
+                    </div>
+                </div>
 
 
-<br>
+                <div class="col-md-4">
+                    <div class="analysis-label">
+                        PRICE DIFFERENCE
+                    </div>
 
-<a href="/properties/">← Back to Properties</a>
+                    <div class="analysis-value">
+                        {{ price_difference_pct|floatformat:1 }}%
+                    </div>
+                </div>
 
-</section>
+            </div>
+
+
+            {% if price_difference_pct < 0 %}
+
+                <div class="status-badge status-undervalued">
+                    🟢 Potentially Undervalued
+                </div>
+
+                <p class="mt-3 mb-0 text-muted">
+                    The listed price is below the model's estimated value.
+                    This property may deserve further investigation.
+                </p>
+
+            {% else %}
+
+                <div class="status-badge status-overvalued">
+                    🔴 Above Estimated Value
+                </div>
+
+                <p class="mt-3 mb-0 text-muted">
+                    The listed price is above the model's estimated value.
+                </p>
+
+            {% endif %}
+
+
+            <hr class="my-4">
+
+            <div class="footer-note">
+                This is a machine-learning estimate, not a professional
+                property valuation. Actual market value may differ.
+            </div>
+
+        </section>
+
+    {% endif %}
+
+
+    <!-- Property Location Map -->
+    <section class="map-card">
+
+        <h2 class="section-title">
+            📍 Property Location
+        </h2>
+
+        <div id="map"></div>
+
+    </section>
+
+</main>
+
+
+<!-- Bootstrap JavaScript -->
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
+
 
 <!-- Leaflet JavaScript -->
+<script
+    src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js">
+</script>
 
-<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
 
 <script>
-
-    // Property coordinates
     const latitude = {{ property.latitude|default:"null" }};
     const longitude = {{ property.longitude|default:"null" }};
 
-    // Create the map
-    const map = L.map('map');
+    const map = L.map("map");
 
-    // OpenStreetMap tiles
+
+    /*
+        Colorful OpenStreetMap-style tiles.
+        This is not CARTO or Mapbox.
+    */
     L.tileLayer(
-        'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+        "https://{s}.tile.openstreetmap.de/{z}/{x}/{y}.png",
         {
-            maxZoom: 19,
-            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+            attribution:
+                '&copy; OpenStreetMap contributors',
+            maxZoom: 19
         }
     ).addTo(map);
 
 
-    // If property has real coordinates
+    // Use the property's actual coordinates
     if (latitude !== null && longitude !== null) {
 
         map.setView(
@@ -209,12 +583,14 @@
         marker.bindPopup(
             "<b>{{ property.title|escapejs }}</b><br>" +
             "Rs. {{ property.price|floatformat:0 }}<br>" +
-            "{{ property.address|escapejs }}, {{ property.city|escapejs }}"
+            "{{ property.address|escapejs }}, " +
+            "{{ property.city|escapejs }}"
         ).openPopup();
 
     }
 
-    // If property does not have coordinates
+
+    // Fallback location: Kathmandu
     else {
 
         map.setView(
@@ -229,11 +605,10 @@
         marker.bindPopup(
             "<b>{{ property.title|escapejs }}</b><br>" +
             "Rs. {{ property.price|floatformat:0 }}<br>" +
-            "Exact location unavailable — showing approximate area."
+            "Exact location unavailable. Showing Kathmandu as an approximate location."
         ).openPopup();
 
     }
-
 </script>
 
 </body>
