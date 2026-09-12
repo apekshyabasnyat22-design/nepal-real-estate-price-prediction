@@ -1,0 +1,679 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0"
+    >
+
+    <title>About | Nepal Real Estate</title>
+
+    <!-- Bootstrap -->
+    <link
+        href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css"
+        rel="stylesheet"
+    >
+
+    <!-- Main CSS -->
+    <link
+        rel="stylesheet"
+        href="{% static 'properties/style.css' %}"
+    >
+
+    <style>
+
+        body {
+            background: #f6f8fb;
+        }
+
+        .about-navbar {
+            background: #111827;
+        }
+
+        .about-page {
+            max-width: 1100px;
+            margin: auto;
+            padding: 60px 20px 80px;
+        }
+
+        .about-header {
+            text-align: center;
+            margin-bottom: 50px;
+        }
+
+        .about-badge {
+            display: inline-block;
+            background: #e8f0ff;
+            color: #1a56db;
+            padding: 7px 15px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 600;
+            margin-bottom: 15px;
+        }
+
+        .about-header h1 {
+            font-size: 40px;
+            font-weight: 700;
+            color: #111827;
+            margin-bottom: 15px;
+        }
+
+        .about-header p {
+            max-width: 700px;
+            margin: auto;
+            color: #6b7280;
+            font-size: 16px;
+            line-height: 1.7;
+        }
+
+        .about-card {
+            background: white;
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 25px;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
+        }
+
+        .about-card h2 {
+            color: #111827;
+            font-size: 23px;
+            font-weight: 700;
+            margin-bottom: 15px;
+        }
+
+        .about-card p {
+            color: #6b7280;
+            line-height: 1.8;
+            font-size: 14px;
+        }
+
+        .feature-card {
+            background: white;
+            border-radius: 14px;
+            padding: 25px;
+            height: 100%;
+            border: 1px solid #e8ebf0;
+        }
+
+        .feature-icon {
+            font-size: 28px;
+            margin-bottom: 15px;
+        }
+
+        .feature-card h3 {
+            font-size: 17px;
+            font-weight: 700;
+            color: #111827;
+        }
+
+        .feature-card p {
+            color: #6b7280;
+            font-size: 13px;
+            line-height: 1.7;
+            margin-bottom: 0;
+        }
+
+        .tech-badge {
+            display: inline-block;
+            background: #f1f5f9;
+            color: #374151;
+            padding: 9px 15px;
+            border-radius: 8px;
+            margin: 5px;
+            font-size: 13px;
+            font-weight: 600;
+        }
+
+        .workflow {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 25px;
+        }
+
+        .workflow-step {
+            background: #f8fafc;
+            border: 1px solid #e5e7eb;
+            border-radius: 10px;
+            padding: 15px 18px;
+            text-align: center;
+            font-size: 13px;
+            font-weight: 600;
+            color: #374151;
+        }
+
+        .workflow-arrow {
+            color: #1a56db;
+            font-weight: bold;
+            font-size: 20px;
+        }
+
+        .cta-card {
+            background: #111827;
+            color: white;
+            border-radius: 16px;
+            padding: 35px;
+            text-align: center;
+            margin-top: 30px;
+        }
+
+        .cta-card h2 {
+            font-weight: 700;
+            margin-bottom: 12px;
+        }
+
+        .cta-card p {
+            color: #cbd5e1;
+            font-size: 14px;
+            margin-bottom: 22px;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: #1a56db;
+            color: white;
+            text-decoration: none;
+            padding: 11px 22px;
+            border-radius: 9px;
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .cta-button:hover {
+            background: #1244b5;
+            color: white;
+        }
+
+        .disclaimer {
+            margin-top: 25px;
+            text-align: center;
+            color: #6b7280;
+            font-size: 12px;
+            line-height: 1.6;
+        }
+
+        @media (max-width: 768px) {
+
+            .about-header h1 {
+                font-size: 31px;
+            }
+
+            .about-card {
+                padding: 25px;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+<!-- Navigation -->
+
+<nav class="navbar navbar-expand-lg navbar-dark about-navbar">
+
+    <div class="container">
+
+        <a
+            class="navbar-brand fw-bold"
+            href="/"
+        >
+            🏠 Nepal Real Estate
+        </a>
+
+
+        <button
+            class="navbar-toggler"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarNav"
+        >
+
+            <span class="navbar-toggler-icon"></span>
+
+        </button>
+
+
+        <div
+            class="collapse navbar-collapse"
+            id="navbarNav"
+        >
+
+            <div class="navbar-nav ms-auto">
+
+                <a
+                    class="nav-link"
+                    href="/"
+                >
+                    Home
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="/properties/"
+                >
+                    Properties
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="/predict/"
+                >
+                    Price Prediction
+                </a>
+
+                <a
+                    class="nav-link"
+                    href="/undervalued/"
+                >
+                    Undervalued
+                </a>
+
+                <a
+                    class="nav-link active"
+                    href="/about/"
+                >
+                    About
+                </a>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</nav>
+
+
+<!-- Main -->
+
+<main class="about-page">
+
+
+    <!-- Header -->
+
+    <div class="about-header">
+
+        <span class="about-badge">
+            📊 DATA-DRIVEN REAL ESTATE
+        </span>
+
+        <h1>
+            About Nepal Real Estate
+        </h1>
+
+        <p>
+            A machine-learning powered platform designed to
+            help users understand property prices and make
+            more informed real-estate decisions in Nepal.
+        </p>
+
+    </div>
+
+
+    <!-- Problem -->
+
+    <div class="about-card">
+
+        <h2>
+            The Problem
+        </h2>
+
+        <p>
+            Property prices can vary significantly depending on
+            location, area, road access, property characteristics,
+            and other factors. Buyers may struggle to determine
+            whether a property's asking price is reasonable,
+            while sellers may have difficulty estimating an
+            appropriate price.
+        </p>
+
+        <p class="mb-0">
+            This project uses historical property data and
+            machine learning to provide a data-driven price
+            estimate and identify listings that may be worth
+            further investigation.
+        </p>
+
+    </div>
+
+
+    <!-- What it does -->
+
+    <div class="about-card">
+
+        <h2>
+            What This Platform Does
+        </h2>
+
+        <div class="row g-4 mt-1">
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        🤖
+                    </div>
+
+                    <h3>
+                        Price Prediction
+                    </h3>
+
+                    <p>
+                        Estimates the expected property price
+                        using a trained Random Forest regression
+                        model.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        📊
+                    </div>
+
+                    <h3>
+                        Market Comparison
+                    </h3>
+
+                    <p>
+                        Compares the listed property price with
+                        the model's estimated price.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        💡
+                    </div>
+
+                    <h3>
+                        Potential Opportunities
+                    </h3>
+
+                    <p>
+                        Highlights properties where the listed
+                        price is lower than the model estimate.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- ML -->
+
+    <div class="about-card">
+
+        <h2>
+            Machine Learning Approach
+        </h2>
+
+        <p>
+            The system uses supervised machine learning for
+            property price regression. Several property
+            characteristics are used as input features,
+            including location, area, bedrooms, bathrooms,
+            floors, parking, road width, property age,
+            facing, road type, and amenities.
+        </p>
+
+        <p class="mb-0">
+            Random Forest was selected as the model used by
+            the application after comparing regression models
+            during the project analysis.
+        </p>
+
+
+        <div class="workflow">
+
+            <div class="workflow-step">
+                Property Data
+            </div>
+
+            <div class="workflow-arrow">
+                →
+            </div>
+
+            <div class="workflow-step">
+                Data Processing
+            </div>
+
+            <div class="workflow-arrow">
+                →
+            </div>
+
+            <div class="workflow-step">
+                Random Forest
+            </div>
+
+            <div class="workflow-arrow">
+                →
+            </div>
+
+            <div class="workflow-step">
+                Price Estimate
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <!-- Technology -->
+
+    <div class="about-card">
+
+        <h2>
+            Technology Used
+        </h2>
+
+        <p>
+            The platform combines machine learning, web
+            development, database technology, and mapping
+            tools.
+        </p>
+
+
+        <div class="text-center mt-3">
+
+            <span class="tech-badge">
+                Python
+            </span>
+
+            <span class="tech-badge">
+                Scikit-learn
+            </span>
+
+            <span class="tech-badge">
+                Random Forest
+            </span>
+
+            <span class="tech-badge">
+                Django
+            </span>
+
+            <span class="tech-badge">
+                PostgreSQL
+            </span>
+
+            <span class="tech-badge">
+                Bootstrap 5
+            </span>
+
+            <span class="tech-badge">
+                Leaflet
+            </span>
+
+            <span class="tech-badge">
+                OpenStreetMap
+            </span>
+
+        </div>
+
+    </div>
+
+
+    <!-- How to use -->
+
+    <div class="about-card">
+
+        <h2>
+            How to Use the Platform
+        </h2>
+
+        <div class="row g-4 mt-1">
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        1️⃣
+                    </div>
+
+                    <h3>
+                        Explore Properties
+                    </h3>
+
+                    <p>
+                        Browse available property listings and
+                        view their details and locations.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        2️⃣
+                    </div>
+
+                    <h3>
+                        Predict a Price
+                    </h3>
+
+                    <p>
+                        Enter property characteristics to receive
+                        an ML-generated price estimate.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+            <div class="col-md-4">
+
+                <div class="feature-card">
+
+                    <div class="feature-icon">
+                        3️⃣
+                    </div>
+
+                    <h3>
+                        Find Opportunities
+                    </h3>
+
+                    <p>
+                        Explore potentially undervalued properties
+                        identified by the model.
+                    </p>
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+    </div>
+
+
+    <!-- CTA -->
+
+    <div class="cta-card">
+
+        <h2>
+            Ready to Explore the Market?
+        </h2>
+
+        <p>
+            Browse properties or use our machine-learning
+            price prediction tool.
+        </p>
+
+        <a
+            href="/properties/"
+            class="cta-button"
+        >
+            Explore Properties →
+        </a>
+
+    </div>
+
+
+    <!-- Disclaimer -->
+
+    <div class="disclaimer">
+
+        This platform provides machine-learning based estimates
+        for decision support. Predictions should not be considered
+        professional property valuations or guarantees of market
+        price.
+
+    </div>
+
+
+</main>
+
+
+<!-- Bootstrap -->
+
+<script
+    src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js">
+</script>
+
+
+</body>
+
+</html>
